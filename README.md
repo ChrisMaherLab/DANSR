@@ -1,4 +1,5 @@
 # sRNA-Disc
 
-# Conda Installation
+# Installationi of sRNA-Disc
+
 ## coming soon!!
