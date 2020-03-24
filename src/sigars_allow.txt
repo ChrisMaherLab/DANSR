@@ -1,0 +1,3 @@
+M	1,inf
+MIM	5,inf;1,5;5,inf
+MDM	5,inf;1,5;5,inf
