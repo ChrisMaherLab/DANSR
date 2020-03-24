@@ -1,5 +1,5 @@
 # sRNA-Disc
 
-# Installationi of sRNA-Disc
+## Installationi of sRNA-Disc
 
-## coming soon!!
+### coming soon!!
