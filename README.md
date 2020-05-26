@@ -52,15 +52,15 @@ python3.7 src/small.py --begin-no-trimming \
 DANSR generates two main folders, one is for the alignment results and the other one is for the detection results. The main file in the aligment folder is the aligned BAM file. The detection results folder contains several files incldung:  
  
 Main files:
-1. ```annotated.smallRNAs.tsv```
-2. ```annotated.smallRNAs.close.proximity.tsv```
-3. ```unannotated.smallRNAs.tsv```
+1. ```annotated.smallRNAs.tsv```: contains all annotated small RNAs that pass all filters. . 
+2. ```annotated.smallRNAs.close.proximity.tsv```: contains all annotated small RNAs passing all filters but were annotated with a close proximity to the feature.  
+3. ```unannotated.smallRNAs.tsv```: contains all unannotated (novel) small RNAs that pass all filtering processes. . 
 
 <u>Additional files:</u> 
 
-4. ```result.sample.all.clusters.tsv```
-5. ```result.sample.annotated.others.tsv```
-6. ```result.sample.unannotated.other.tsv```
+4. ```all.clusters.tsv```: contains all clusters. 
+5. ```annotated.others.tsv```: contais annotated small RNAs that didn't pass the filtering processes (e.g. overlapping with protein coding, small RNA not within the range of 17-200nt, small RNAs with loe jacard score (not the best feature assigned)). . 
+6. ```unannotated.other.tsv```
 
 
 ## DANSR Docker Instructions
