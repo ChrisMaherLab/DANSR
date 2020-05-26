@@ -3,7 +3,7 @@
 ## 
 DANSR is developed at [Christopher Maher Lab](http://www.maherlab.com/) at [Washington University in St. Louis](http://www.wustl.edu).
    
-## SV-HotSpot Manual
+## DANSR Manual
 ### Prerequisites
 Please make sure you have installed the following tools:
 
@@ -37,17 +37,19 @@ python path_to/src/dansr.py
 ```
 
 ### Running DANSR
-Assume PATH_TO_SV_DANSR is the local directory where DANSR was installed, the following command runs DANSR on the test data provided.
+Assume PATH_TO_DANSR is the local directory where DANSR was installed, the following command runs DANSR on the test data provided.
 
 ```
-python3.7 src/small.py --begin-no-trimming \
-        -i PATH_TO_SV_HOTSPOT/test_data/CRC1-P.fastq \
+python3.7 src/dansr.py --begin-no-trimming \
+        -i PATH_TO_TEST_DATA/CRC1-P.fastq \
         -o OUTPUT_DIR --type single --cutoff 0.33 \
 	-v -w -N 10 -U 0.5 -R 2 -V 0.75 -J 0.3 \
         -r PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
         -l PATH_TO_ANNOTATION/smallRNA_library.gtf,PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.gtf \
         -g PATH_TO_ANNOTATION/smallRNA_library.gtf \
 ```
+where PATH_TO_TEST_DATA is the path to the test_data directory provided with DANSR. 
+
 
 ### Output  
 DANSR generates two main folders, one is for the alignment results and the other one is for the detection results. The main file in the aligment folder is the aligned BAM file. The detection results folder contains several files incldung:  
