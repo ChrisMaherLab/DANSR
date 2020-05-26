@@ -12,6 +12,7 @@ Please make sure you have installed the following tools:
 [CMake](https://cmake.org/) <br>
 [GCC](https://gcc.gnu.org/) <br>
 [Matplotlib](http://matplotlib.org/) <br>
+[BWA](http://bio-bwa.sourceforge.net/) <br>
 [samtools](https://github.com/samtools/samtools) <br>
 [bedtools2](https://github.com/arq5x/bedtools2) <br>
 [cutadapt](https://cutadapt.readthedocs.io/en/stable/) 
