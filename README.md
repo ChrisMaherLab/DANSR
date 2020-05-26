@@ -20,9 +20,10 @@ Please make sure you have installed the following tools:
 Clone the DANSR repository (with PATH_TO_DANSR is the local directory where you want to install DANSR):
 
 ```
-cd PATH_TO_SV_DANSR
+cd PATH_TO_DANSR
 git clone https://github.com/ChrisMaherLab/DANSR.git
 cd DANSR
+python3.7 src/dansr.py
 ```
 As an optional step, you can add the absolute path to the "src" directoy to the PATH variable. 
  
