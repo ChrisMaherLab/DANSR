@@ -45,7 +45,6 @@ python3.7 PATH_TO_DANSR/src/small.py --begin-no-trimming \
         -r PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
         -l PATH_TO_ANNOTATION/smallRNA_library.gtf,PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.gtf \
         -g PATH_TO_ANNOTATION/smallRNA_library.gtf \
-        -e hg19_F_misc,hg19_F_piRNA,hg19_miRNA,hg19_rRna,hg19_snRna,hg19_snoRna,hg19_tRNAs
 ```
 
 ### Output  
