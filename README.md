@@ -24,4 +24,6 @@ git clone https://github.com/ChrisMaherLab/DANSR.git
 cd DANSR
 chmod +x src/*
 ```
+If you do not want to specifiy the whole path to the "src" scripts, add the path to "src" to the PATH variable. 
+
 
