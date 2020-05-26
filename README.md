@@ -29,3 +29,5 @@ You also need to add the path to "src" directory to your PATH variable in case y
 #### Setup
 Please note that you need to update the setup.small.ini available at the "src" directory. This file include the paths to the tool DANSR uses. 
 
+### Running DANSR
+
