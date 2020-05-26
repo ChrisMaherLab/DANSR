@@ -56,7 +56,8 @@ Main files:
 2. ```annotated.smallRNAs.close.proximity.tsv```
 3. ```unannotated.smallRNAs.tsv```
 
-Additional files: <br>
+<u>Additional files:</u> 
+
 4. ```result.sample.all.clusters.tsv```
 5. ```result.sample.annotated.others.tsv```
 6. ```result.sample.unannotated.other.tsv```
