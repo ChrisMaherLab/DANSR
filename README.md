@@ -57,9 +57,9 @@ Main files:
 3. ```unannotated.smallRNAs.tsv.```
 
 Additional files:
-```result.sample.all.clusters.tsv.```
-```result.sample.annotated.others.tsv.```
-```result.sample.unannotated.other.tsv.```
+4. ```result.sample.all.clusters.tsv.```
+5. ```result.sample.annotated.others.tsv.```
+6. ```result.sample.unannotated.other.tsv.```
 
 
 ## DANSR Docker Instructions
