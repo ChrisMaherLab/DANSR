@@ -36,6 +36,7 @@ python path_to/src/dansr.py
 ```
 
 ### Running DANSR
+Assume PATH_TO_SV_DANSR is the local directory where DANSR was installed, the following command runs DANSR on the test data provided.
 
 ```
 python3.7 PATH_TO_DANSR/src/small.py --begin-no-trimming \
