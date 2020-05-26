@@ -52,14 +52,14 @@ python3.7 src/small.py --begin-no-trimming \
 DANSR generates two main folders, one is for the alignment results and the other one is for the detection results. The main file in the aligment folder is the aligned BAM file. The detection results folder contains several files incldung:  
  
 Main files:
-1. ```annotated.smallRNAs.tsv.```
-2. ```annotated.smallRNAs.close.proximity.tsv.```
-3. ```unannotated.smallRNAs.tsv.```
+1. ```annotated.smallRNAs.tsv```
+2. ```annotated.smallRNAs.close.proximity.tsv```
+3. ```unannotated.smallRNAs.tsv```
 
-Additional files:
-4. ```result.sample.all.clusters.tsv.```
-5. ```result.sample.annotated.others.tsv.```
-6. ```result.sample.unannotated.other.tsv.```
+Additional files: <br>
+4. ```result.sample.all.clusters.tsv```
+5. ```result.sample.annotated.others.tsv```
+6. ```result.sample.unannotated.other.tsv```
 
 
 ## DANSR Docker Instructions
