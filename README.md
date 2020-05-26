@@ -39,9 +39,10 @@ python path_to/src/dansr.py
 Assume PATH_TO_SV_DANSR is the local directory where DANSR was installed, the following command runs DANSR on the test data provided.
 
 ```
-python3.7 PATH_TO_DANSR/src/small.py --begin-no-trimming \
+python3.7 src/small.py --begin-no-trimming \
         -i PATH_TO_SV_HOTSPOT/test_data/CRC1-P.fastq \
-        -o OUTPUT -v -w -N 10 \
+        -o OUTPUT_DIR --type single --cutoff 0.33 \
+	-v -w -N 10 -U 0.5 -R 2 -V 0.75 -J 0.3 \
         -r PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
         -l PATH_TO_ANNOTATION/smallRNA_library.gtf,PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.gtf \
         -g PATH_TO_ANNOTATION/smallRNA_library.gtf \
