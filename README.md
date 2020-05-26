@@ -1,6 +1,7 @@
 # DANSR: A tool for the detection of annotated and novel small RNAs implemented in Python and C++. 
 
-## DANSR is developed at [Christopher Maher Lab](http://www.maherlab.com/) at [Washington University in St. Louis](http://www.wustl.edu).
+## 
+DANSR is developed at [Christopher Maher Lab](http://www.maherlab.com/) at [Washington University in St. Louis](http://www.wustl.edu).
    
 ## SV-HotSpot Manual
 ### Prerequisites
