@@ -46,7 +46,7 @@ python3.7 src/dansr.py --begin-no-trimming \
 	-v -w -N 10 -U 0.5 -R 2 -V 0.75 -J 0.3 \
         -r PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
         -l PATH_TO_ANNOTATION/smallRNA_library.gtf,PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.gtf \
-        -g PATH_TO_ANNOTATION/smallRNA_library.gtf \
+        -g PATH_TO_ANNOTATION/smallRNA_library.gtf
 ```
 where PATH_TO_TEST_DATA is the path to the test_data directory provided with DANSR. 
 
