@@ -37,6 +37,15 @@ python path_to/src/dansr.py
 
 ### Running DANSR
 
+```
+python3.7 PATH_TO_DANSR/src/small.py --begin-no-trimming \
+        -i PATH_TO_SV_HOTSPOT/test_data/CRC1-P.fastq \
+        -o OUTPUT -v -w -N 10 \
+        -r PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
+        -l PATH_TO_ANNOTATION/smallRNA_library.gtf,PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.gtf \
+        -g PATH_TO_ANNOTATION/smallRNA_library.gtf \
+        -e hg19_F_misc,hg19_F_piRNA,hg19_miRNA,hg19_rRna,hg19_snRna,hg19_snoRna,hg19_tRNAs
+```
 
 ### Output  
 
