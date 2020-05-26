@@ -7,7 +7,7 @@ DANSR is developed at [Christopher Maher Lab](http://www.maherlab.com/) at [Wash
 ### Prerequisites
 Please make sure you have installed the following tools:
 
-[Python3](https://www.python.org/)
+[Python3](https://www.python.org/) <br>
 CMake
 GCC
 Matplotlib
