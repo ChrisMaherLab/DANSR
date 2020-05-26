@@ -17,14 +17,13 @@ Please make sure you have installed the following tools:
 [cutadapt](https://cutadapt.readthedocs.io/en/stable/) 
 
 ### Installation
-Clone the DANST repository (with PATH_TO_DANSR is the local directory where you want to install DANSR):
+Clone the DANSR repository (with PATH_TO_DANSR is the local directory where you want to install DANSR):
 
 ```
 cd PATH_TO_SV_DANSR
 git clone https://github.com/ChrisMaherLab/DANSR.git
 cd DANSR
 ```
-You also need to add the path to "src" directory to your PATH variable in case you do not want to speificy the who. 
 
 #### Setup
 Please note that you need to update the setup.small.ini available at the "src" directory. This file include the paths to the tool DANSR uses. 
