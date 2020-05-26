@@ -39,3 +39,24 @@ python src/dansr.py
 
 ### Output  
 
+
+## SV-HotSpot Docker Instructions
+To use DANSR, a docker image has been created and tested on Linux and Mac. To run DANSR, you need to have [Docker](https://docs.docker.com/) installed on your machine. 
+
+### Docker Installation
+* Ubuntu: follow [the instructions](https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/) to get Docker CE for Ubuntu.
+* Mac: follow [the instructions](https://store.docker.com/editions/community/docker-ce-desktop-mac) to install [the Stable verion of Docker CE](https://download.docker.com/    mac/stable/Docker.dmg) on Mac.
+<!--- 
+* Windows: follow [the instructions](https://docs.docker.com/toolbox/toolbox_install_windows/) to install [Docker Toolbox](https://download.docker.com/win/stable/DockerTool    box.exe) on Windows. 
+-->
+ 
+To obtain the latest docker image, run the following in your command line:
+ 
+```
+docker pull chrismaherlab/dansr
+```
+To test the image, run the following command which shows the usage of this tool:
+```
+docker run chrismaherlab/dansr dansr
+```
+
