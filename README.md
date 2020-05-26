@@ -24,14 +24,15 @@ cd PATH_TO_SV_DANSR
 git clone https://github.com/ChrisMaherLab/DANSR.git
 cd DANSR
 ```
-
+As an optional step, you can add the absolute path to the "src" directoy to the PATH variable. 
+ 
 #### Setup
 Please note that you need to update the setup.small.ini available at the "src" directory. This file includes the paths to the tool DANSR uses. 
 
 ### Test installation
 To test the installation, please type in your terminal the following command which shows the usage page of DANSR. 
 ```
-python src/dansr.py
+python path_to/src/dansr.py
 ```
 
 ### Running DANSR
