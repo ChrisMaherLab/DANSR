@@ -21,13 +21,13 @@ DANSR is developed at [Christopher Maher Lab](http://www.maherlab.com/) at [Wash
 ## Manual
 ### Prerequisites
 Please make sure you have installed the following tools:
-  -[Python3](https://www.python.org/)
-    -[pandas](https://pandas.pydata.org/)
-  -[GCC](https://gcc.gnu.org/)
-  -[BWA](http://bio-bwa.sourceforge.net/)
-  -[samtools](https://github.com/samtools/samtools)
-  -[bedtools2](https://github.com/arq5x/bedtools2)
-  -[cutadapt](https://cutadapt.readthedocs.io/en/stable/) 
+- [Python3](https://www.python.org/)
+  - [pandas](https://pandas.pydata.org/)
+- [GCC](https://gcc.gnu.org/)
+- [BWA](http://bio-bwa.sourceforge.net/)
+- [samtools](https://github.com/samtools/samtools)
+- [bedtools2](https://github.com/arq5x/bedtools2)
+- [cutadapt](https://cutadapt.readthedocs.io/en/stable/) 
 
 <!---
 [CMake](https://cmake.org/) <br>
