@@ -6,6 +6,7 @@ DANSR is a tool for the detection of annotated and novel small RNAs between 17-2
 To optimize boundary estimation between read clusters, DANSR employs a heuristic algorithm that assigns a weight to each read according to its overlap with other reads and calculates small noncoding RNA boundaries excluding the low-weight reads.
 
 <div align="center">
+<img align="center" src="images/fig1b.png.png" alt="visualization example" width="500" height="700">
 <span style="display:block;text-align:center">![alt text](images/fig1b.png?raw=true)</span>
 </div>
 
