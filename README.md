@@ -11,7 +11,7 @@ To optimize boundary estimation between read clusters, DANSR employs a heuristic
 
 Next, since short reads with multiple hits are the primary source of false positives in small noncoding RNA discovery, DANSR uses a network model to identify all candidate single-node clusters and multi-node clusters.
 <div align="center">
-<img align="center" src="images/fig1c.png" alt="visualization example" width="280" height="300">
+<img align="center" src="images/fig1c.png" alt="visualization example" width="300" height="300">
 </div>
 
 <span style="display:block;text-align:center">![alt text](images/fig1c.png?raw=true)</span>
