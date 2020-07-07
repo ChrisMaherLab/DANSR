@@ -9,7 +9,7 @@ In the first step, DANSR align read sequences to the reference human genome as w
 ### 2- Cluster Identification (Read overlap)
 To form clusters of reads, BAM files are first converted into BED format and overlapping alginments are merged into a read cluster using BEDTools. 
 
-### 3- Boundary Optimization ((Heuristic algorithm) 
+### 3- Boundary Optimization (Heuristic algorithm) 
 To optimize boundary estimation between read clusters, DANSR employs a heuristic algorithm that assigns a weight to each read according to its overlap with other reads and calculates small noncoding RNA boundaries excluding the low-weight reads.
 
 <div align="center">
