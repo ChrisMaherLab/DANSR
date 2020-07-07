@@ -13,6 +13,7 @@ Next, since short reads with multiple hits are the primary source of false posit
 <div align="center">
 <img align="center" src="images/fig1c.png" alt="visualization example" width="280" height="300">
 </div>
+
 <span style="display:block;text-align:center">![alt text](images/fig1c.png?raw=true)</span>
 
 Finally, a decision tree systematically filters read clusters that are likely to be false positive alignments generated from highly expressed small noncoding RNAs and sequencing errors. Based on the number of reads in a cluster, whether it is annotated, and whether the reads are repetitive, the model identifies and removes low-quality read clusters.
