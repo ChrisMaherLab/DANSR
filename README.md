@@ -4,8 +4,10 @@ DANSR is a tool for the detection of annotated and novel small RNAs between 17-2
 
 ## Pipeline
 ### 1- Read Alignment 
+In the first step, DANSR align read sequences to the reference human genome as well as a small noncoding library collected from different resources using BWA. If required, DANSR also runs cutadapt algorithm ot remove adapters from the read sequences. 
 
 ### 2- Cluster Identification (Read overlap)
+To form clusters of reads, BAM files are first converted into BED format and overlapping alginments are merged into a read cluster using BEDTools. 
 
 ### 3- Boundary Optimization ((Heuristic algorithm) 
 To optimize boundary estimation between read clusters, DANSR employs a heuristic algorithm that assigns a weight to each read according to its overlap with other reads and calculates small noncoding RNA boundaries excluding the low-weight reads.
