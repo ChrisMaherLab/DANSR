@@ -3,12 +3,18 @@
 DANSR is a tool for the detection of annotated and novel small RNAs between 17-200nt from RNAseq data.  It has the ability to efficiently process large quantities of sequenced reads of variable length to identify diverse small RNA species.
 
 ## Pipeline
+### 1- Read Alignment 
+
+### 2- Cluster Identification 
+
+### 3- Boundary Optimization 
 To optimize boundary estimation between read clusters, DANSR employs a heuristic algorithm that assigns a weight to each read according to its overlap with other reads and calculates small noncoding RNA boundaries excluding the low-weight reads.
 
 <div align="center">
 <img align="center" src="images/fig1b.png" alt="visualization example" width="280" height="300">
 </div>
 
+### 3- Boundary Optimization 
 Next, since short reads with multiple hits are the primary source of false positives in small noncoding RNA discovery, DANSR uses a network model to identify all candidate single-node clusters and multi-node clusters.
 <div align="center">
 <img align="center" src="images/fig1c.png" alt="visualization example" width="300" height="300">
