@@ -3,7 +3,7 @@
 DANSR is a tool for the detection of annotated and novel small RNAs between 17-200nt from RNAseq data.  It has the ability to efficiently process large quantities of sequenced reads of variable length to identify diverse small RNA species.
 
 ## Pipeline
-### 1- Read Alignment 
+#### 1- Read Alignment 
 
 ### 2- Cluster Identification (Read overlap)
 
