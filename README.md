@@ -75,6 +75,7 @@ $PATH_TO_DANSR/src/dansr.py -h
 
 ### Parameters
 #### Input files
+```
 - -t/--type : (Required) "single" or "pair", depending on whether single or paired-end reads are provided
 - -i/--input-file : (Required) A FASTQ file of single-end RNA-seq reads if type is "single", or the first of two paired-end FASTQs if type is "pair"
 - -j/--input-file-2 : (Required if pair) Second paired-end FASTQ file
@@ -86,7 +87,7 @@ $PATH_TO_DANSR/src/dansr.py -h
 - -e/--small-types : (Required) Comma separated list of types from small RNA GTF with which to annotate read clusters
 - -l/--list-of-gtf : (Required) A comma-separated list of paths to small RNA GTF files and the human reference GTF
 - -z/--setup-file : (Default: setup.small.ini) Path to the DANSR setup file if it has been moved from the default location
-
+```
 #### General options
 - -h/--help : (Optional) Print help information
 - -o/--output-dir : (Default: ./) Path to output directory
