@@ -1,4 +1,1 @@
 chrom	start	end	strand	total_mapped_reads	unique_mapped_reads	shared_reads
-chr21	9827004	9827228	+	21	0	21
-chrGL000220.1	153049	153273	+	21	0	21
-chrGL000220.1	154327	154628	+	5	0	5

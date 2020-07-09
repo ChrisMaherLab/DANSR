@@ -1,28 +1,28 @@
-# DANSR: A tool for the detection of annotated and novel small RNAs implemented in Python and C++. 
+# DANSR: A tool for the detection of annotated and novel small RNAs implemented in Python and C++
 
 DANSR is a tool for the detection of annotated and novel small RNAs between 17-200nt from RNAseq data.  It has the ability to efficiently process large quantities of sequenced reads of variable length to identify diverse small RNA species.
 
 ## Pipeline
-### 1- Read Alignment 
+### 1. Read Alignment 
 In the first step, DANSR align read sequences to the reference human genome as well as a small noncoding library collected from different resources using BWA. If required, DANSR also runs cutadapt algorithm ot remove adapters from the read sequences. 
 
-### 2- Cluster Identification (Read overlap)
+### 2. Cluster Identification (Read overlap)
 To form clusters of reads, BAM files are first converted into BED format and overlapping alginments are merged into a read cluster using BEDTools. 
 
-### 3- Boundary Optimization (Heuristic algorithm) 
+### 3. Boundary Optimization (Heuristic algorithm) 
 To optimize boundary estimation between read clusters, DANSR employs a heuristic algorithm that assigns a weight to each read according to its overlap with other reads and calculates small noncoding RNA boundaries excluding the low-weight reads.
 
 <div align="center">
 <img align="center" src="images/fig1b.png" alt="visualization example" width="280" height="300">
 </div>
 
-### 4- Identify single-and multi-node clusters (Network model)
+### 4. Identify single-and multi-node clusters (Network model)
 Next, since short reads with multiple hits are the primary source of false positives in small noncoding RNA discovery, DANSR uses a network model to identify all candidate single-node clusters and multi-node clusters.
 <div align="center">
 <img align="center" src="images/fig1c.png" alt="visualization example" width="300" height="300">
 </div>
 
-### 5-Identify annotated/unannotated small RNAs (Decision tree model)
+### 5. Identify annotated/unannotated small RNAs (Decision tree model)
 Finally, a decision tree systematically filters read clusters that are likely to be false positive alignments generated from highly expressed small noncoding RNAs and sequencing errors. Based on the number of reads in a cluster, whether it is annotated, and whether the reads are repetitive, the model identifies and removes low-quality read clusters.
 
 <div align="center">
@@ -127,7 +127,7 @@ Main files:
 <u>Additional files:</u> 
 
 4. ```all.clusters.tsv```: contains all clusters. 
-5. ```annotated.others.tsv```: contains annotated small RNAs that didn't pass the filtering steps (e.g. overlapping with protein coding genes, small RNA not within the range of 17-200nt, small RNAs with low Jaccard score (not the best feature assigned). 
+5. ```annotated.others.tsv```: contains annotated small RNAs that didn't pass the filtering steps (e.g. overlapping with protein coding genes, small RNA not within the range of 17-200nt, small RNAs with low Jaccard score (not the best feature assigned)). 
 6. ```unannotated.other.tsv```: contains unannotated small RNAs that did not pass the filters.
 
 ### Example
@@ -137,12 +137,15 @@ An example small RNA GTF and single read FASTQ file are included with DANSR to d
 cd $PATH_TO_DANSR
 gunzip example/*.gz
 src/dansr.py \
-        -i example/CRC1-P.fastq \
-        -o example --type single \
-	-v -w -N 10 \
+        -i example/MRA2_miRNA.fastq \
+        -o example \
+	--type single \
+	--begin-no-trimming \
+	-v -N 10 \
         -r $PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
         -l example/smallRNA_library.gtf,$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.gtf \
-        -g example/smallRNA_library.gtf
+        -g example/smallRNA_library.gtf \
+	-e hg19_F_misc,hg19_F_piRNA,hg19_miRNA,hg19_rRna,hg19_snRna,hg19_snoRna,hg19_tRNAs
 ```
 The results of this execution can be compared with the results files in example/example_results.
 
