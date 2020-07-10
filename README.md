@@ -76,47 +76,51 @@ $PATH_TO_DANSR/src/dansr.py -h
 ### Parameters
 #### Input files
 ```
-- -t/--type : (Required) "single" or "pair", depending on whether single or paired-end reads are provided
-- -i/--input-file : (Required) A FASTQ file of single-end RNA-seq reads if type is "single", or the first of two paired-end FASTQs if type is "pair"
-- -j/--input-file-2 : (Required if pair) Second paired-end FASTQ file
-- -s/--single-type
-- -p/--pair-type : (Default: fr-unstranded) Strandedness of paired-end reads, either "fr-unstranded", "fr-firststranded" or "fr-secondstranded"
-- -r/--reference : (Required) Path to human reference genome in FASTA format
-- -c/--chromosomes : (Default: chr1-22,X) Comma separated list of chromosome names from reference to which reads will be aligned
-- -g/--gtf-small : (Required) A comma-separated list of paths to small RNA GTF files
-- -e/--small-types : (Required) Comma separated list of types from small RNA GTF with which to annotate read clusters
-- -l/--list-of-gtf : (Required) A comma-separated list of paths to small RNA GTF files and the human reference GTF
-- -z/--setup-file : (Default: setup.small.ini) Path to the DANSR setup file if it has been moved from the default location
+-t/--type : (Required) "single" or "pair", depending on whether single or paired-end reads are provided
+-i/--input-file : (Required) A FASTQ file of single-end RNA-seq reads if type is "single", or the first of two paired-end FASTQs if type is "pair"
+-j/--input-file-2 : (Required if pair) Second paired-end FASTQ file
+-s/--single-type
+-p/--pair-type : (Default: fr-unstranded) Strandedness of paired-end reads, either "fr-unstranded", "fr-firststranded" or "fr-secondstranded"
+-r/--reference : (Required) Path to human reference genome in FASTA format
+-c/--chromosomes : (Default: chr1-22,X) Comma separated list of chromosome names from reference to which reads will be aligned
+-g/--gtf-small : (Required) A comma-separated list of paths to small RNA GTF files
+-e/--small-types : (Required) Comma separated list of types from small RNA GTF with which to annotate read clusters
+-l/--list-of-gtf : (Required) A comma-separated list of paths to small RNA GTF files and the human reference GTF
+-z/--setup-file : (Default: setup.small.ini) Path to the DANSR setup file if it has been moved from the default location
 ```
 #### General options
-- -h/--help : (Optional) Print help information
-- -o/--output-dir : (Default: ./) Path to output directory
-- -S/--sample-name : (Default: sample) Sample name for output files
-- -k/--keep-tmp : (Optional) Do not delete the tmp folder when run is complete
-- -w/--skip : (Optional) Skip a step if target output exists
-- -v/--verbose : (Optional) Print details of run
-
+```
+-h/--help : (Optional) Print help information
+-o/--output-dir : (Default: ./) Path to output directory
+-S/--sample-name : (Default: sample) Sample name for output files
+-k/--keep-tmp : (Optional) Do not delete the tmp folder when run is complete
+-w/--skip : (Optional) Skip a step if target output exists
+-v/--verbose : (Optional) Print details of run
+```
 #### Options for pipeline tools
-- -x/--cutadapter-opts : (Default: "") Command line options to be passed to cutadaptor enclosed with ""
-- -X/--bwa-options-aln : (Default: "") Command line options to be passed to bwa-aln enclosed with ""
-- -Y/--bwa-options-sam : (Default: "") Command line options to be passed to bwa-samse/sampe enclosed with ""
-
+```
+-x/--cutadapter-opts : (Default: "") Command line options to be passed to cutadaptor enclosed with ""
+-X/--bwa-options-aln : (Default: "") Command line options to be passed to bwa-aln enclosed with ""
+-Y/--bwa-options-sam : (Default: "") Command line options to be passed to bwa-samse/sampe enclosed with ""
+```
 #### Input options
-- -b/--begin-no-trimming : (Optional) Do not trim input reads
-- -a/--adapter : (Required if -b not set) Adapter sequence to cut from first reads file
-- -A/--adapter2 : (Required if paired and -b not set) 3' adapter sequence to cut from second reads file
-
+```
+-b/--begin-no-trimming : (Optional) Do not trim input reads
+-a/--adapter : (Required if -b not set) Adapter sequence to cut from first reads file
+-A/--adapter2 : (Required if paired and -b not set) 3' adapter sequence to cut from second reads file
+```
 #### Alignment or filtering options
-- -n/--number-hits : (Default: 5) Number of hits above which multi-mapped reads will be discarded
-- -N/--number-reads : (Default: 2) Minimum number of reads to form a cluster
-- -P/--percent-cur : (Default: 0.3) Max percentage of reads from precursor
-- -f/--cutoff : (Default: 0.33) RPM increase above which a cluster boundary will be designated
-- -U/--percent-uniq : (Default: 0.5) Minimum percentage of unique reads in a cluster
-- -R/--uniq-reads : (Default: 2) Minimum number of unique reads in a cluster
-- -V/--ov-with-largest : (Default: 0.75) Minimum percentage of overlap with largest cluster
-- -u/--unstranded : (Optional) Ignore strand when determining overlaps
-- -J/--jaccard-index : (Default: 0.3) Minimum Jaccard similarity score for a cluster
-
+```
+-n/--number-hits : (Default: 5) Number of hits above which multi-mapped reads will be discarded
+-N/--number-reads : (Default: 2) Minimum number of reads to form a cluster
+-P/--percent-cur : (Default: 0.3) Max percentage of reads from precursor
+-f/--cutoff : (Default: 0.33) RPM increase above which a cluster boundary will be designated
+-U/--percent-uniq : (Default: 0.5) Minimum percentage of unique reads in a cluster
+-R/--uniq-reads : (Default: 2) Minimum number of unique reads in a cluster
+-V/--ov-with-largest : (Default: 0.75) Minimum percentage of overlap with largest cluster
+-u/--unstranded : (Optional) Ignore strand when determining overlaps
+-J/--jaccard-index : (Default: 0.3) Minimum Jaccard similarity score for a cluster
+```
 ### Output
 DANSR generates two main folders, one is for the alignment results and the other one is for the detection results. The main file in the alignment folder is the aligned BAM file. The detection results folder contains several files:
  
