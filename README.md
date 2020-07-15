@@ -1,4 +1,4 @@
-# DANSR: A tool for the detection of annotated and novel small RNAs implemented in Python and C++
+# DANSR: A tool for the detection of annotated and novel small RNAs
 
 DANSR is a tool for the detection of annotated and novel small RNAs between 17-200nt from RNAseq data.  It has the ability to efficiently process large quantities of sequenced reads of variable length to identify diverse small RNA species.
 
