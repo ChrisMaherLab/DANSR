@@ -149,8 +149,7 @@ src/dansr.py \
 	-v -N 10 \
         -r $PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
         -l example/smallRNA_library.gtf,$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.gtf \
-        -g example/smallRNA_library.gtf \
-	-e hg19_F_misc,hg19_F_piRNA,hg19_miRNA,hg19_rRna,hg19_snRna,hg19_snoRna,hg19_tRNAs
+        -g example/smallRNA_library.gtf
 ```
 The results of this execution can be compared with the results files in example/example_results.
 
