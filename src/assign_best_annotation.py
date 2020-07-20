@@ -7,8 +7,8 @@ from subprocess import Popen, PIPE, STDOUT
 from os.path import basename
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns; sns.set()
+#import matplotlib.pyplot as plt
+#import seaborn as sns; sns.set()
 
 def usage():
     print ("""
@@ -19,7 +19,7 @@ def usage():
         -o/--output-dir        [string  :    path to output dir.    Default: ./                                           ]
         -g/--gtf               [string  :    path to gtf file of small RNA. (Or , seperated paths)                        ]
         -j/--j-score           [float   :    min Jaccard similarity. Default: 0.3                                         ]
-        -s/--small-types       [string  :    comma separted small RNA types                                               ]
+        -s/--small-types       [string  :    comma separated small RNA types                                               ]
         -m/--min-novo-reads    [int     :    minimum number of reads to call unannotated novel small RNA. Default: 5.     ]
         -u/--unstranded        [        :    no strand awareness. Default: stranded                                       ]
         -b/--bedtools          [string  :    path to bedtoos.       Default: bedtools                                     ]    
@@ -53,13 +53,13 @@ def use_real_path():
 
 def getParameters(argv):
     try:
-        opts, args = getopt.getopt(argv,"hi:o:g:j:b:u",["help",
+        opts, args = getopt.getopt(argv,"hi:o:g:j:b:s:u",["help",
                                                        "input-bed-file=",
                                                        "output-dir=",
                                                        "gtf=", 
                                                        "j-score=",
                                                        "bedtools=",
-                                                       #"small-types=",
+                                                       "small-types=",
                                                        "unstranded"])
     except getopt.GetoptError:
         usage()
@@ -89,10 +89,9 @@ def getParameters(argv):
         elif opt in ("-b", "--bedtools"):
             global path_to_bedtools
             path_to_bedtools = arg
-
-        #elif opt in ("-s", "--small-types"):
-        #    global small_types_str
-        #    small_types_str=arg
+        elif opt in ("-s", "--small-types"):
+           global small_types_str
+           small_types_str=arg
         #elif opt in ("-m", "--min-novo-reads"):
         #    global min_novo
         #    min_novo=int(arg)
@@ -282,10 +281,13 @@ def print_results():
     #set_small_types()
     small_types = ['misc', 'piRNA', 'miRNA', 'rRNA', 'snRNA', 'snoRNA', 'tRNAs', 'Mt_rRNA', 'Mt_tRNA', 'misc_RNA', 'snRNA',
                    'siRNA', 'vaultRNA','hg19_F_misc','hg19_F_piRNA','hg19_miRNA','hg19_rRna','hg19_snRna','hg19_snoRna','hg19_tRNAs']
+    # Append user-supplied biotypes, if available
+    if small_types_str:
+        small_types += small_types_str.strip().split(',')
 
     outfile1 = "%s" % output_dir+'/results/'+getOutputName2(input_bed_file,"smallRNAs.tsv")
     outfile2 = "%s" % output_dir+'/results/'+getOutputName2(input_bed_file,"smallRNAs.close.proximity.tsv")    
-    outfile3 = "%s" % output_dir+'/results/'+getOutputName2(input_bed_file,"others.tsv")
+    outfile3 = "%s" % output_dir+'/results/'+getOutputName2(input_bed_file,"rejected.tsv")
 
     f1 = open(outfile1,"w")
     f2 = open(outfile2,"w")
@@ -410,48 +412,48 @@ def generate_leng_ranges(output):
 
     outfile.close()
 
-def plot_annot_length_dist(output):
-    ### generate length ranges 
-    generate_leng_ranges(output)
+# def plot_annot_length_dist(output):
+#     ### generate length ranges 
+#     generate_leng_ranges(output)
 
-    ff = pd.read_csv(output+'/tmp/features.tsv', sep='\t')
-    ff = ff.sort_values(by=['Cluster_Length'])
-    ff_cts = ff.groupby(['Length_range', 'Biotype'], sort=False).agg('size').reset_index()
-    ff_cts.columns = ['Length_range', 'Biotype', 'Counts']
-    ff_cts2 = ff_cts.pivot('Biotype','Length_range','Counts')
+#     ff = pd.read_csv(output+'/tmp/features.tsv', sep='\t')
+#     ff = ff.sort_values(by=['Cluster_Length'])
+#     ff_cts = ff.groupby(['Length_range', 'Biotype'], sort=False).agg('size').reset_index()
+#     ff_cts.columns = ['Length_range', 'Biotype', 'Counts']
+#     ff_cts2 = ff_cts.pivot('Biotype','Length_range','Counts')
 
-    ### reorder columns 
-    column_order = ff_cts['Length_range'].tolist()
-    cols = []
-    for x in column_order:
-        if x not in cols:
-            cols.append(x)
-    ff_cts2 = ff_cts2.reindex(cols, axis=1)
+#     ### reorder columns 
+#     column_order = ff_cts['Length_range'].tolist()
+#     cols = []
+#     for x in column_order:
+#         if x not in cols:
+#             cols.append(x)
+#     ff_cts2 = ff_cts2.reindex(cols, axis=1)
 
-    sns.set_style("ticks")
-    #fig = plt.figure()
-    fig, ax = plt.subplots(1,1, figsize=(20, 8))
-    sns.heatmap(data=ff_cts2,
-                cmap=sns.color_palette("YlGnBu"),
-                annot=True, annot_kws={"size": 7},
-                cbar_kws={"shrink": .45, 'label': 'Number of small RNAs'},
-                square=True, vmin = 0, vmax= ff_cts['Counts'].max(),
-                fmt=".0f", ax=ax)
+#     sns.set_style("ticks")
+#     #fig = plt.figure()
+#     fig, ax = plt.subplots(1,1, figsize=(20, 8))
+#     sns.heatmap(data=ff_cts2,
+#                 cmap=sns.color_palette("YlGnBu"),
+#                 annot=True, annot_kws={"size": 7},
+#                 cbar_kws={"shrink": .45, 'label': 'Number of small RNAs'},
+#                 square=True, vmin = 0, vmax= ff_cts['Counts'].max(),
+#                 fmt=".0f", ax=ax)
 
-    ax.set_xticklabels(ax.get_xticklabels(), rotation =90, fontsize=10)
-    ax.set_yticklabels(ax.get_yticklabels(), rotation =0, fontsize=10)
-    #ax.set_title("Length distribution of annotated small RNAs (n="+str(len(annot_res))+")", fontsize=15)
-    ax.set_xlabel('Length ranges')
-    ax.set_ylabel('')
-    plt.xticks(fontsize=10, ha="center")
-    plt.yticks(fontsize=10, verticalalignment="center")
+#     ax.set_xticklabels(ax.get_xticklabels(), rotation =90, fontsize=10)
+#     ax.set_yticklabels(ax.get_yticklabels(), rotation =0, fontsize=10)
+#     #ax.set_title("Length distribution of annotated small RNAs (n="+str(len(annot_res))+")", fontsize=15)
+#     ax.set_xlabel('Length ranges')
+#     ax.set_ylabel('')
+#     plt.xticks(fontsize=10, ha="center")
+#     plt.yticks(fontsize=10, verticalalignment="center")
 
-    for tick in ax.get_xticklabels():
-        tick.set_rotation(90)
-    for _, spine in ax.spines.items():
-        spine.set_visible(True)
+#     for tick in ax.get_xticklabels():
+#         tick.set_rotation(90)
+#     for _, spine in ax.spines.items():
+#         spine.set_visible(True)
 
-    plt.savefig(output+'/annotated_smallRNAs_length_dist.png', dpi=400)
+#     plt.savefig(output+'/annotated_smallRNAs_length_dist.png', dpi=400)
  
 def main(argv):
     setDefault()

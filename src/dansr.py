@@ -30,13 +30,12 @@ def usage():
         -A/--adapter2          [string:      3\' adapter for reads 2                Optional        Default: ""               ]   
 
         -r/--reference         [string  :    Path human reference genome            Required                                  ]
-        -X/--bwa-options-aln   [string  :    bwa-aln options in ""                  Optional        Default: ""               ]
+        -X/--bwa-options-aln   [string  :    bwa-aln options in ""                  Optional        Default: "-q 5 -l 17 -k 1"]
         -Y/--bwa-options-sam   [string  :    bwa-samse/sampe option in ""           Optional        Default: ""               ]
 
         -c/--chromosomes       [string  :    Comma separated chr names              Optional        Default: chr1-22,X        ]
         -n/--number-hits       [int     :    max number of hits on chr1-22,X        Optional        Default:  5               ]
 
-        -t/--type              [string  :    "single" or "pair"                     Required                                  ]
         -p/--pair-type         [string  :    "fr-unstranded"/"fr-firststranded"/"fr-secondstranded" Default: fr-unstranded    ]
         -s/--single-type       [string  :    "forward"/"reverse"/"both"                             Default: forward          ]
 
@@ -157,7 +156,7 @@ def use_real_path():
 
 def getParameters(argv):
     try:
-        opts, args = getopt.getopt(argv,"ho:vwkS:z:ba:i:j:x:A:r:X:Y:c:n:t:p:s:N:P:f:l:g:e:uR:U:V:J:",
+        opts, args = getopt.getopt(argv,"ho:vwkS:z:ba:i:j:x:A:r:X:Y:c:n:p:s:N:P:f:l:g:e:uR:U:V:J:",
        ["help",
         "output-dir",
         "verbose",
@@ -176,7 +175,6 @@ def getParameters(argv):
         "bwa-options-sam=",
         "chromosomes=",
         "number-hits=",
-        "type=",
         "pair-type=",
         "single-type=",
         "number-reads=",
@@ -251,9 +249,6 @@ def getParameters(argv):
         elif opt in ("-n","--number-hits"):
             global number_hits
             number_hits = arg
-        elif opt in ("-t","--type"):
-            global type_str
-            type_str = arg
         elif opt in ("-p","--pair-type"):
             global pair_type
             pair_type = arg
@@ -299,6 +294,14 @@ def getParameters(argv):
         elif opt in ("-J","--jaccard-index"):
             global jaccard_index
             jaccard_index = arg
+    if not input_file_2:
+        type_str="single"
+        if single_type != "forward":
+            print('Error: this version of DANSR supports only forward stranded single read libraries', file=sys.stderr)
+            sys.exit(1)
+    else:
+        type_str="pair"
+        print('Warning: paired end mode is still under beta development, take care to check results for accuracy.', file=sys.stderr)
 
 def make_dir(path):
     if not os.path.exists(path):
@@ -891,7 +894,9 @@ def run_assign_best_annotation():
         cmd = cmd + ' -j ' + jaccard_index
     if no_strand:
         cmd = cmd + ' -u '
-
+    if small_types:
+        cmd += '-s '+ small_types
+        
     print (cmd)
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
@@ -1016,13 +1021,14 @@ def remove_tmp():
         cmd = 'rm -rf ' + output_dir +'/tmp'
 
 def warnings_and_usage():
+    if input_file == '':
+        print ("-i/--input-file is required")
+        exit(1)
+        
     # cutadapt
     if begin_no_cut == False:
         if adapter == '':
             print ("-a/--adapter is required")
-            exit(1)
-        if input_file == '':
-            print ("-i/--input-file is required")
             exit(1)
         if not((input_file_2 =='' and adapter2 =='') or (input_file_2!='' and adapter2!='' )):
             print ("-A/--adapter2 and -j/--input-file-2 have to be set or not set at the same time")
@@ -1031,11 +1037,11 @@ def warnings_and_usage():
     if reference == '':
         print ("-r/--reference is required")
         exit(1)
-    if begin_no_cut == True:
-        print ("here",input_file)
-        if input_file == '':
-            print ("-i/--input-file is required")
-            exit(1)
+    # if begin_no_cut == True:
+    #     print ("here",input_file)
+    #     if input_file == '':
+    #         print ("-i/--input-file is required")
+    #         exit(1)
     # other
     if type_str == '':
         print ("-t/--type is required")
@@ -1046,9 +1052,9 @@ def warnings_and_usage():
     if gtf_small == '':
         print ("-g/--gtf-small is required")
         exit(1)
-    if small_types == '':
-        print ("-e/--small-types is required")
-        exit(1)
+    # if small_types == '':
+    #     print ("-e/--small-types is required")
+    #     exit(1)
 
     # classification 
 

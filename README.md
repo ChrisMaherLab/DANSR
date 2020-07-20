@@ -2,6 +2,8 @@
 
 DANSR is a tool for the detection of annotated and novel small RNAs between 17-200nt from RNAseq data.  It has the ability to efficiently process large quantities of sequenced reads of variable length to identify diverse small RNA species.
 
+DANSR is developed at [Christopher Maher Lab](http://www.maherlab.com/) at [Washington University in St. Louis](http://www.wustl.edu).
+
 ## Pipeline
 ### 1. Read Alignment 
 In the first step, DANSR align read sequences to the reference human genome as well as a small noncoding library collected from different resources using BWA. If required, DANSR also runs cutadapt algorithm ot remove adapters from the read sequences. 
@@ -30,8 +32,6 @@ Finally, a decision tree systematically filters read clusters that are likely to
 </div>
 
 The remaining read clusters are either assigned to annotated small noncoding RNAs or identified as novel RNAs based on their distance to the known RNAs and the Jaccard score of the set. 
-
-DANSR is developed at [Christopher Maher Lab](http://www.maherlab.com/) at [Washington University in St. Louis](http://www.wustl.edu).
    
 ## Manual
 ### Prerequisites
@@ -63,8 +63,9 @@ Finally, DANSR makes use of human reference GRCh37 v75 GTF and FASTA files, whic
 ```
 cd $PATH_TO_REFERENCE
 wget ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
-wget ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna_sm.primary_assembly.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa.gz
 gunzip *.gz
+bwa index Homo_sapiens.GRCh37.75.dna.primary_assembly.fa
 ```
 
 ### Test installation
@@ -76,50 +77,51 @@ $PATH_TO_DANSR/src/dansr.py -h
 ### Parameters
 #### Input files
 ```
--t/--type : (Required) "single" or "pair", depending on whether single or paired-end reads are provided
--i/--input-file : (Required) A FASTQ file of single-end RNA-seq reads if type is "single", or the first of two paired-end FASTQs if type is "pair"
--j/--input-file-2 : (Required if pair) Second paired-end FASTQ file
--s/--single-type
--p/--pair-type : (Default: fr-unstranded) Strandedness of paired-end reads, either "fr-unstranded", "fr-firststranded" or "fr-secondstranded"
--r/--reference : (Required) Path to human reference genome in FASTA format
--c/--chromosomes : (Default: chr1-22,X) Comma separated list of chromosome names from reference to which reads will be aligned
--g/--gtf-small : (Required) A comma-separated list of paths to small RNA GTF files
--e/--small-types : (Required) Comma separated list of types from small RNA GTF with which to annotate read clusters
--l/--list-of-gtf : (Required) A comma-separated list of paths to small RNA GTF files and the human reference GTF
--z/--setup-file : (Default: setup.small.ini) Path to the DANSR setup file if it has been moved from the default location
+-t/--type          (Required) "single" or "pair", depending on whether single or paired-end reads are provided
+-i/--input-file    (Required) A FASTQ file of single-end RNA-seq reads if type is "single", or the first of two paired-end FASTQs if type is "pair"
+-j/--input-file-2  (Required if pair) Second paired-end FASTQ file
+-s/--single-type   (Default: forward) Strandedness of single reads, either "forward", "reverse" or "both"
+-p/--pair-type     (Default: fr-unstranded) Strandedness of paired-end reads, either "fr-unstranded", "fr-firststranded" or "fr-secondstranded"
+-r/--reference     (Required) Path to human reference genome in FASTA format
+-c/--chromosomes   (Default: chr1-22,X) Comma separated list of chromosome names from reference to which reads will be aligned
+-g/--gtf-small     (Required) A comma-separated list of paths to small RNA GTF files
+-e/--small-types   (Optional) Comma separated list of additional gene_biotype entries from the small RNA GTF with which to annotate read clusters;
+                    these types will be used in addition to the default biotypes: misc, piRNA, miRNA, rRNA, snRNA, snoRNA, tRNAs, Mt_rRNA, Mt_tRNA, misc_RNA, snRNA, siRNA, vaultRNA, hg19_F_misc, hg19_F_piRNA, hg19_miRNA, hg19_rRna, hg19_snRna, hg19_snoRna, hg19_tRNAs
+-l/--list-of-gtf   (Required) A comma-separated list of paths to small RNA GTF files and the human reference GTF
+-z/--setup-file    (Default: setup.small.ini) Path to the DANSR setup file if it has been moved from the default location
 ```
 #### General options
 ```
--h/--help : (Optional) Print help information
--o/--output-dir : (Default: ./) Path to output directory
--S/--sample-name : (Default: sample) Sample name for output files
--k/--keep-tmp : (Optional) Do not delete the tmp folder when run is complete
--w/--skip : (Optional) Skip a step if target output exists
--v/--verbose : (Optional) Print details of run
+-h/--help          (Optional) Print help information
+-o/--output-dir    (Default: ./) Path to output directory
+-S/--sample-name   (Default: sample) Sample name for output files
+-k/--keep-tmp      (Optional) Do not delete the tmp folder when run is complete
+-w/--skip          (Optional) Skip a step if target output exists
+-v/--verbose       (Optional) Print details of run
 ```
 #### Options for pipeline tools
 ```
--x/--cutadapter-opts : (Default: "") Command line options to be passed to cutadaptor enclosed with ""
--X/--bwa-options-aln : (Default: "") Command line options to be passed to bwa-aln enclosed with ""
--Y/--bwa-options-sam : (Default: "") Command line options to be passed to bwa-samse/sampe enclosed with ""
+-x/--cutadapter-opts  (Default: "") Command line options to be passed to cutadaptor enclosed with ""
+-X/--bwa-options-aln  (Default: "-q 5 -l 17 -k 1") Command line options to be passed to bwa-aln enclosed with ""
+-Y/--bwa-options-sam  (Default: "") Command line options to be passed to bwa-samse/sampe enclosed with ""
 ```
 #### Input options
 ```
--b/--begin-no-trimming : (Optional) Do not trim input reads
--a/--adapter : (Required if -b not set) Adapter sequence to cut from first reads file
--A/--adapter2 : (Required if paired and -b not set) 3' adapter sequence to cut from second reads file
+-b/--begin-no-trimming  (Optional) Do not trim input reads
+-a/--adapter            (Required if -b not set) Adapter sequence to cut from first reads file
+-A/--adapter2           (Required if paired and -b not set) 3' adapter sequence to cut from second reads file
 ```
 #### Alignment or filtering options
 ```
--n/--number-hits : (Default: 5) Number of hits above which multi-mapped reads will be discarded
--N/--number-reads : (Default: 2) Minimum number of reads to form a cluster
--P/--percent-cur : (Default: 0.3) Max percentage of reads from precursor
--f/--cutoff : (Default: 0.33) RPM increase above which a cluster boundary will be designated
--U/--percent-uniq : (Default: 0.5) Minimum percentage of unique reads in a cluster
--R/--uniq-reads : (Default: 2) Minimum number of unique reads in a cluster
--V/--ov-with-largest : (Default: 0.75) Minimum percentage of overlap with largest cluster
--u/--unstranded : (Optional) Ignore strand when determining overlaps
--J/--jaccard-index : (Default: 0.3) Minimum Jaccard similarity score for a cluster
+-n/--number-hits      (Default: 5) Number of hits above which multi-mapped reads will be discarded
+-N/--number-reads     (Default: 2) Minimum number of reads to form a cluster
+-P/--percent-cur      (Default: 0.3) Max percentage of reads from precursor
+-f/--cutoff           (Default: 0.33) RPM increase above which a cluster boundary will be designated
+-U/--percent-uniq     (Default: 0.5) Minimum percentage of unique reads in a cluster
+-R/--uniq-reads       (Default: 2) Minimum number of unique reads in a cluster
+-V/--ov-with-largest  (Default: 0.75) Minimum percentage of overlap with largest cluster
+-u/--unstranded       (Optional) Ignore strand when determining overlaps
+-J/--jaccard-index    (Default: 0.3) Minimum Jaccard similarity score for a cluster
 ```
 ### Output
 DANSR generates two main folders, one is for the alignment results and the other one is for the detection results. The main file in the alignment folder is the aligned BAM file. The detection results folder contains several files:
@@ -132,8 +134,8 @@ Main files:
 <u>Additional files:</u> 
 
 4. ```all.clusters.tsv```: contains all clusters. 
-5. ```annotated.others.tsv```: contains annotated small RNAs that didn't pass the filtering steps (e.g. overlapping with protein coding genes, small RNA not within the range of 17-200nt, small RNAs with low Jaccard score (not the best feature assigned)). 
-6. ```unannotated.other.tsv```: contains unannotated small RNAs that did not pass the filters.
+5. ```annotated.rejected.tsv```: contains annotated small RNAs that didn't pass the filtering steps (e.g. overlapping with protein coding genes, small RNA not within the range of 17-200nt, small RNAs with low Jaccard score (not the best feature assigned)). 
+6. ```unannotated.rejected.tsv```: contains unannotated small RNAs that did not pass the filters.
 
 ### Example
 An example small RNA GTF and single read FASTQ file are included with DANSR to demonstrate how to run the tool.  It can be run as follows:

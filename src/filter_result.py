@@ -9,8 +9,8 @@ from os.path import basename
 from difflib import get_close_matches
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns; sns.set()
+# import matplotlib.pyplot as plt
+# import seaborn as sns; sns.set()
 
 def usage():
     print("""
@@ -293,55 +293,55 @@ def output_results(output_dir):
 
         annot_res.to_csv(output_dir+'/tmp/'+getOutputName2(input_bed_file, 'annotated.tsv'), sep='\t', index=False)
         #annot_ov_pc.to_csv(output_dir+'/'+getOutputName2(input_bed_file, 'smallRNAs.overlap.with.other.features.tsv'), sep='\t', index=False)
-        novel_other.to_csv(output_dir+'/results/'+getOutputName2(input_bed_file, 'unannotated.other.tsv'), sep='\t', index=False, na_rep="NA")
+        novel_other.to_csv(output_dir+'/results/'+getOutputName2(input_bed_file, 'unannotated.rejected.tsv'), sep='\t', index=False, na_rep="NA")
         novel_small.to_csv(output_dir+'/results/'+getOutputName2(input_bed_file, 'unannotated.smallRNAs.tsv'), sep='\t', index=False, na_rep="NA")
 
     else:
         sys.exit('File '+output_dir+'/'+getOutputName2(input_bed_file,'all.clusters.tsv')+' was not found!.')
 
-def plot_clusters_width_dist(output):
-    sns.set_style("whitegrid")
-    for file in ['annot', 'novel']:
-        if file == 'annot':
-            tmp = pd.read_csv(output+'/'+getOutputName2(input_bed_file, 'annotated.smallRNAs.tsv'), sep='\t') 
-            mytitle = "Distribution of the length of annotated small RNA clusters (n="+str(len(annot_res))+")"
-            fileName = "annotated_smallRNA_clusters_width_dist.png"
-        else: 
-            tmp = pd.read_csv(output+'/'+getOutputName2(input_bed_file, 'unannotated.smallRNAs.tsv'), sep='\t')
-            mytitle = "Distribution of the length of unannotated small RNA clusters(n="+str(len(novel_res))+")"
-            fileName = "unannotated_smallRNA_clusters_width_dist.png"
+# def plot_clusters_width_dist(output):
+#     sns.set_style("whitegrid")
+#     for file in ['annot', 'novel']:
+#         if file == 'annot':
+#             tmp = pd.read_csv(output+'/'+getOutputName2(input_bed_file, 'annotated.smallRNAs.tsv'), sep='\t') 
+#             mytitle = "Distribution of the length of annotated small RNA clusters (n="+str(len(annot_res))+")"
+#             fileName = "annotated_smallRNA_clusters_width_dist.png"
+#         else: 
+#             tmp = pd.read_csv(output+'/'+getOutputName2(input_bed_file, 'unannotated.smallRNAs.tsv'), sep='\t')
+#             mytitle = "Distribution of the length of unannotated small RNA clusters(n="+str(len(novel_res))+")"
+#             fileName = "unannotated_smallRNA_clusters_width_dist.png"
         
-        tmp['length'] = (tmp['end'] - tmp['start']) + 1
-        tmp['group'] = '> 500'
-        tmp.loc[(tmp['length'] <= 500) & (tmp['length'] >200) , 'group'] = '<=500 & >200'
-        tmp.loc[(tmp['length'] <= 200) & (tmp['length'] >100) , 'group'] = '<=200 & >100'
-        tmp.loc[(tmp['length'] <= 100) & (tmp['length'] >50) , 'group'] = '<=100 & >50'
-        tmp.loc[(tmp['length'] <= 50) & (tmp['length'] >20), 'group'] = '<=50 & >20'
-        tmp.loc[(tmp['length'] <= 20), 'group'] = '<=20'
+#         tmp['length'] = (tmp['end'] - tmp['start']) + 1
+#         tmp['group'] = '> 500'
+#         tmp.loc[(tmp['length'] <= 500) & (tmp['length'] >200) , 'group'] = '<=500 & >200'
+#         tmp.loc[(tmp['length'] <= 200) & (tmp['length'] >100) , 'group'] = '<=200 & >100'
+#         tmp.loc[(tmp['length'] <= 100) & (tmp['length'] >50) , 'group'] = '<=100 & >50'
+#         tmp.loc[(tmp['length'] <= 50) & (tmp['length'] >20), 'group'] = '<=50 & >20'
+#         tmp.loc[(tmp['length'] <= 20), 'group'] = '<=20'
         
-        cl_counts = tmp.groupby('group', sort=False).agg('size').reset_index()
-        cl_counts.columns = ['group', 'num_clusters']
+#         cl_counts = tmp.groupby('group', sort=False).agg('size').reset_index()
+#         cl_counts.columns = ['group', 'num_clusters']
         
-        ### create breaks
-        brks = ["<=20", "<=50 & >20","<=100 & >50","<=200 & >100","<=500 & >200","> 500"]
-        for x in brks:
-            if x not in cl_counts['group'].tolist():
-                brks.remove(x)
+#         ### create breaks
+#         brks = ["<=20", "<=50 & >20","<=100 & >50","<=200 & >100","<=500 & >200","> 500"]
+#         for x in brks:
+#             if x not in cl_counts['group'].tolist():
+#                 brks.remove(x)
         
-        grps = []
-        for x in brks:
-            grps.append(cl_counts[cl_counts.group==x].num_clusters.item())
+#         grps = []
+#         for x in brks:
+#             grps.append(cl_counts[cl_counts.group==x].num_clusters.item())
         
-        fig, ax = plt.subplots(1,1, figsize=(1.6* len(cl_counts['group']),5))
-        ax = sns.barplot(x="group", y = "num_clusters", data=cl_counts, order=brks)            
-        ax.set_title(mytitle, fontsize=15)
-        ax.set_xlabel('')
-        ax.set_ylabel('Number of clusters', fontsize=12)
-        ax.set(yticks= np.arange(0, cl_counts['num_clusters'].max(), 100))
-        for index, row in cl_counts.iterrows():
-            ax.text(row.name,grps[index], grps[index], color='black', ha="center")
+#         fig, ax = plt.subplots(1,1, figsize=(1.6* len(cl_counts['group']),5))
+#         ax = sns.barplot(x="group", y = "num_clusters", data=cl_counts, order=brks)            
+#         ax.set_title(mytitle, fontsize=15)
+#         ax.set_xlabel('')
+#         ax.set_ylabel('Number of clusters', fontsize=12)
+#         ax.set(yticks= np.arange(0, cl_counts['num_clusters'].max(), 100))
+#         for index, row in cl_counts.iterrows():
+#             ax.text(row.name,grps[index], grps[index], color='black', ha="center")
     
-        plt.savefig(output+'/'+fileName)
+#         plt.savefig(output+'/'+fileName)
 
 def generate_leng_ranges(output):
     ### compute clusters length
@@ -403,48 +403,48 @@ def generate_leng_ranges(output):
      	        
     outfile.close()
 
-def plot_annot_length_dist(output):
-    ### generate length ranges 
-    generate_leng_ranges(output)
+# def plot_annot_length_dist(output):
+#     ### generate length ranges 
+#     generate_leng_ranges(output)
     
-    ff = pd.read_csv(output+'/tmp/features.tsv', sep='\t')
-    ff = ff.sort_values(by=['Cluster_Length'])
-    ff_cts = ff.groupby(['Length_range', 'Biotype'], sort=False).agg('size').reset_index()
-    ff_cts.columns = ['Length_range', 'Biotype', 'Counts']
-    ff_cts2 = ff_cts.pivot('Biotype','Length_range','Counts')
+#     ff = pd.read_csv(output+'/tmp/features.tsv', sep='\t')
+#     ff = ff.sort_values(by=['Cluster_Length'])
+#     ff_cts = ff.groupby(['Length_range', 'Biotype'], sort=False).agg('size').reset_index()
+#     ff_cts.columns = ['Length_range', 'Biotype', 'Counts']
+#     ff_cts2 = ff_cts.pivot('Biotype','Length_range','Counts')
     
-    ### reorder columns 
-    column_order = ff_cts['Length_range'].tolist()
-    cols = []
-    for x in column_order:
-        if x not in cols:
-            cols.append(x)
-    ff_cts2 = ff_cts2.reindex(cols, axis=1)
+#     ### reorder columns 
+#     column_order = ff_cts['Length_range'].tolist()
+#     cols = []
+#     for x in column_order:
+#         if x not in cols:
+#             cols.append(x)
+#     ff_cts2 = ff_cts2.reindex(cols, axis=1)
     
-    sns.set_style("ticks")
-    #fig = plt.figure()
-    fig, ax = plt.subplots(1,1, figsize=(20, 8))
-    sns.heatmap(data=ff_cts2, 
-                cmap=sns.color_palette("YlGnBu"), 
-                annot=True, annot_kws={"size": 7}, 
-                cbar_kws={"shrink": .45, 'label': 'Number of small RNAs'}, 
-                square=True, vmin = 0, vmax= ff_cts['Counts'].max(),  
-                fmt=".0f", ax=ax)
+#     sns.set_style("ticks")
+#     #fig = plt.figure()
+#     fig, ax = plt.subplots(1,1, figsize=(20, 8))
+#     sns.heatmap(data=ff_cts2, 
+#                 cmap=sns.color_palette("YlGnBu"), 
+#                 annot=True, annot_kws={"size": 7}, 
+#                 cbar_kws={"shrink": .45, 'label': 'Number of small RNAs'}, 
+#                 square=True, vmin = 0, vmax= ff_cts['Counts'].max(),  
+#                 fmt=".0f", ax=ax)
     
-    ax.set_xticklabels(ax.get_xticklabels(), rotation =90, fontsize=10)
-    ax.set_yticklabels(ax.get_yticklabels(), rotation =0, fontsize=10)
-    ax.set_title("Length distribution of annotated small RNAs (n="+str(len(annot_res))+")", fontsize=15)
-    ax.set_xlabel('Length ranges')
-    ax.set_ylabel('')
-    plt.xticks(fontsize=10, ha="center")
-    plt.yticks(fontsize=10, verticalalignment="center")
+#     ax.set_xticklabels(ax.get_xticklabels(), rotation =90, fontsize=10)
+#     ax.set_yticklabels(ax.get_yticklabels(), rotation =0, fontsize=10)
+#     ax.set_title("Length distribution of annotated small RNAs (n="+str(len(annot_res))+")", fontsize=15)
+#     ax.set_xlabel('Length ranges')
+#     ax.set_ylabel('')
+#     plt.xticks(fontsize=10, ha="center")
+#     plt.yticks(fontsize=10, verticalalignment="center")
     
-    for tick in ax.get_xticklabels():
-        tick.set_rotation(90)
-    for _, spine in ax.spines.items():
-        spine.set_visible(True)
+#     for tick in ax.get_xticklabels():
+#         tick.set_rotation(90)
+#     for _, spine in ax.spines.items():
+#         spine.set_visible(True)
     
-    plt.savefig(output+'/annotated_smallRNAs_length_dist.png', dpi=400)
+#     plt.savefig(output+'/annotated_smallRNAs_length_dist.png', dpi=400)
         
 def run_classification():
     f = open(input_bed_file, "r")
