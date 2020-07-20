@@ -174,7 +174,7 @@ To test the image, run the following command which shows the usage of this tool:
 docker run chrismaherlab/dansr dansr -h
 ```
 ### Example 
-To run DANSR docker on the the example data, use the following command:
+To run DANSR using docker on the example data provided, use the following command:
 ```
 docker run -v /local/folder:/dansr_data chrismaherlab/dansr dansr \
         --begin-no-trimming \
