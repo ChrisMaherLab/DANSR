@@ -178,12 +178,12 @@ To run DANSR docker on the the example data, use the following command:
 ```
 docker run -v /local/folder:/dansr_data chrismaherlab/dansr dansr \
         --begin-no-trimming \
-        -i /dansr_data/PATH_TO_SV_HOTSPOT/test_data/CRC1-P.fastq \
-        -o /dansr_data/OUTPUT_DIR --type single --cutoff 0.33 \
+        -i /dansr_data/example/MRA2_miRNA.fastq \
+        -o /dansr_data/example --type single --cutoff 0.33 \
 	-v -w -N 10 -U 0.5 -R 2 -V 0.75 -J 0.3 \
-        -r /dansr_data/PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-        -l /dansr_data/PATH_TO_ANNOTATION/smallRNA_library.gtf,/dansr_data/PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.gtf \
-        -g /dansr_data/PATH_TO_ANNOTATION/smallRNA_library.gtf
+        -r /dansr_data/PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
+        -l /dansr_data/example/smallRNA_library.gtf,/dansr_data/PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.gtf \
+        -g /dansr_data/example/smallRNA_library.gtf
 ```
 where ```/local/folder``` is the local directory on your machine that you need to map to a “location” within the Docker container. This directory should have all your data that you need to use with DANSR. 
 
