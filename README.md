@@ -185,5 +185,6 @@ docker run -v $PATH_TO_REFERENCE:/dansr_ref -v $PATH_TO_OUTPUT/dansr_out chrisma
         -N 10 \
         -r /dansr_ref/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
         -l /opt/DANSR/example/smallRNA_library.gtf,/dansr_ref/Homo_sapiens.GRCh37.75.gtf \
-        -g /opt/DANSR/example/smallRNA_library.gtf```
+        -g /opt/DANSR/example/smallRNA_library.gtf
+```
 where `PATH_TO_REFERENCE` is the local directory containing the human genome reference files and `PATH_TO_OUTPUT` is the desired local output directory.
