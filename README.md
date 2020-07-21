@@ -1,5 +1,5 @@
 # DANSR: A tool for the detection of annotated and novel small RNAs
-<img align="left" width="280" src="images/dansr_logo.png" alt="tool logo">
+<img align="left" width="280" src="images/dansr_logo_v3.png" alt="tool logo">
 DANSR is a tool for the detection of annotated and novel small RNAs between 17-200nt from RNAseq data.  It has the ability to efficiently process large quantities of sequenced reads of variable length to identify diverse small RNA species.
 
 DANSR is developed at [Christopher Maher Lab](http://www.maherlab.com/) at [Washington University in St. Louis](http://www.wustl.edu).
