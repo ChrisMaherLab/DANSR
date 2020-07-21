@@ -159,7 +159,7 @@ def getParameters(argv):
     try:
         opts, args = getopt.getopt(argv,"ho:vwkS:z:ba:i:j:x:A:r:X:Y:c:n:p:s:N:P:f:l:g:e:uR:U:V:J:",
        ["help",
-        "output-dir",
+        "output-dir=",
         "verbose",
         "skip",
         "keep-tmp",

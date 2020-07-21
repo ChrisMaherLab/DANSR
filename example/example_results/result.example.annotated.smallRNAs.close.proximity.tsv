@@ -1,0 +1,3 @@
+chrom	start	end	strand	total_mapped_reads	unique_mapped_reads	shared_reads	feature	best_feature	best_feature_JS
+chrGL000220.1	113347	113398	+	83	0	83	RNA28S5(rRNA)	RNA28S5	0.01
+chrMT	4330	4386	+	1277	0	1277	MT-TI(Mt_tRNA)	MT-TI	0.01

@@ -144,14 +144,14 @@ An example small RNA GTF and single read FASTQ file are included with DANSR to d
 cd $PATH_TO_DANSR
 gunzip example/*.gz
 src/dansr.py \
-        -i example/MRA2_miRNA.fastq \
-        -o example \
-	--type single \
+        --input-file=example/MRA2_miRNA.fastq \
+        --output-dir=example \
+	--sample-name=example \
 	--begin-no-trimming \
-	-v -N 10 \
-        -r $PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-        -l example/smallRNA_library.gtf,$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.gtf \
-        -g example/smallRNA_library.gtf
+	--number-reads=10 \
+        --reference=$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
+        --list-of-gtf=example/smallRNA_library.gtf,$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.gtf \
+        --gtf-small=example/smallRNA_library.gtf
 ```
 The results of this execution can be compared with the results files in example/example_results.
 
@@ -177,14 +177,13 @@ docker run chrismaherlab/dansr dansr -h
 ### Example 
 To run DANSR using docker on the example data provided, use the following command:
 ```
-docker run -v /local/folder:/dansr_data chrismaherlab/dansr dansr \
+docker run -v $PATH_TO_REFERENCE:/dansr_ref -v $PATH_TO_OUTPUT/dansr_out chrismaherlab/dansr dansr.py \
+        -i /opt/DANSR/example/MRA2_miRNA.fastq \
+        -o /dansr_out \
+        -S example \
         --begin-no-trimming \
-        -i /dansr_data/example/MRA2_miRNA.fastq \
-        -o /dansr_data/example --type single --cutoff 0.33 \
-	-v -w -N 10 -U 0.5 -R 2 -V 0.75 -J 0.3 \
-        -r /dansr_data/PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-        -l /dansr_data/example/smallRNA_library.gtf,/dansr_data/PATH_TO_ANNOTATION/Homo_sapiens.GRCh37.75.gtf \
-        -g /dansr_data/example/smallRNA_library.gtf
-```
-where ```/local/folder``` is the local directory on your machine that you need to map to a “location” within the Docker container. This directory should have all your data that you need to use with DANSR. 
-
+        -N 10 \
+        -r /dansr_ref/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
+        -l /opt/DANSR/example/smallRNA_library.gtf,/dansr_ref/Homo_sapiens.GRCh37.75.gtf \
+        -g /opt/DANSR/example/smallRNA_library.gtf```
+where `PATH_TO_REFERENCE` is the local directory containing the human genome reference files and `PATH_TO_OUTPUT` is the desired local output directory.
