@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sys
 import os
+import shutil
 import math
 import getopt
 from subprocess import Popen, PIPE, STDOUT
@@ -365,7 +366,7 @@ runCutadapt.py parameters:
         #print
 
     if begin_no_cut:
-        print ("Note    ###############     ' ","User have already done trimming, return"," ' ############### exsits, skip ...")
+        print ("Note    ###############     ' ","User have already done trimming, return"," ' ############### exists, skip ...")
         return
 
     is_return = False
@@ -373,12 +374,12 @@ runCutadapt.py parameters:
     # refer runCutadapt.py: line 132
     target_file = output_dir+"/tmp/"+getOutputName(input_file,'trim')
     if skip_step and os.path.exists(target_file):
-        print ("Warning ############### >>>> ",target_file," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file," <<<< ############### exists, skip ...")
         is_return = True
     if input_file_2 !='':
         target_file = output_dir+"/tmp/"+getOutputName(input_file_2,'trim')
         if skip_step and os.path.exists(target_file):
-            print ("Warning ############### >>>> ",target_file_2," <<<< ############### exsits, skip ...")
+            print ("Warning ############### >>>> ",target_file_2," <<<< ############### exists, skip ...")
             is_return = True
     if is_return:
         return
@@ -445,7 +446,7 @@ runBWA.py parameters:
     target_file = output_dir+"/alignment/"+getOutputName2(sample_name,'sam')
     print ("$$$$$$$$$$$$$$$",target_file)
     if skip_step and os.path.exists(target_file):
-        print ("Warning ############### >>>> ",target_file," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file," <<<< ############### exists, skip ...")
         return 
 
     cmd = python_path + ' ' + cur_dir+"/runBWA.py" + ' -r ' + reference + ' -i ' + input_file + ' -o ' + output_dir + ' -b ' + path_to_bwa
@@ -501,7 +502,7 @@ run_filter_sam_by_sigar parameters:
     target_file = output_dir+"/tmp/"+getFilename(input_file)+".no.bad.sigar.sam"
     print ("$$$$$$$$$$$$",target_file)
     if skip_step and os.path.exists(target_file):
-        print ("Warning ############### >>>> ",target_file," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file," <<<< ############### exists, skip ...")
         return 
 
     cmd = python_path + ' ' + cur_dir+"/filter_sam_by_sigar.py" +  ' -i ' + output_dir+'/alignment/'+input_file + ' -o ' + output_dir
@@ -549,7 +550,7 @@ run_sam_split parameters:
     target_file = output_dir+"/tmp/"+getFilename(input_file) + ".uniq.sam"
     print ("$$$$$$$$$$$$",target_file)
     if skip_step and os.path.exists(target_file):
-        print ("Warning ############### >>>> ",target_file," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file," <<<< ############### exists, skip ...")
         return
 	
     cmd = python_path + ' ' + cur_dir+"/sam_split.py" +  ' -i ' + output_dir+'/tmp/'+input_file + ' -o ' + output_dir
@@ -606,7 +607,7 @@ run_sam_to_bed parameters:
     target_file_1 = output_dir+"/tmp/"+getOutputName2(input_file,"bed")
     print ("$$$$$$$$$$$$",target_file_1)
     if skip_step and os.path.exists(target_file_1):
-        print ("Warning ############### >>>> ",target_file_1," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file_1," <<<< ############### exists, skip ...")
     else:
         cmd = python_path + ' ' + cur_dir+"/sam_to_bed.py" +  ' -i ' + output_dir+'/tmp/'+input_file + ' -o ' + output_dir + ' -t ' + type_str
 
@@ -625,7 +626,7 @@ run_sam_to_bed parameters:
     target_file_2 = output_dir+"/tmp/"+getOutputName2(input_file_2, "bed")
     print ("$$$$$$$$$$$$",target_file_2)
     if skip_step and os.path.exists(target_file_2):
-        print ("Warning ############### >>>> ",target_file_2," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file_2," <<<< ############### exists, skip ...")
     else:
         cmd = python_path + ' ' + cur_dir+"/sam_to_bed.py" +  ' -i ' + output_dir+'/tmp/'+input_file_2 + ' -o ' + output_dir + ' -t ' + type_str
 
@@ -729,7 +730,7 @@ run_filter_bed parameters:
    
     print ("$$$$$$$$$$$$",target_file_1)
     if skip_step and os.path.exists(target_file_1):
-        print ("Warning ############### >>>> ",target_file_1," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file_1," <<<< ############### exists, skip ...")
     else:
         cmd = python_path + ' ' + cur_dir+"/filter_bed.py" +  ' -i ' + output_dir+'/tmp/'+input_file + ' -o ' + output_dir + ' -n ' + number_reads
         #if is_rm_tmp == False:
@@ -742,7 +743,7 @@ run_filter_bed parameters:
 
         print ("$$$$$$$$$$$$",target_file_2)
     if skip_step and os.path.exists(target_file_2):
-        print ("Warning ############### >>>> ",target_file_2," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file_2," <<<< ############### exists, skip ...")
     else:
         cmd = python_path + ' ' + cur_dir+"/filter_bed.py" +  ' -i ' + output_dir+'/tmp/'+input_file_2 + ' -o ' + output_dir + ' -n ' + number_reads 
         #if is_rm_tmp == False:
@@ -788,7 +789,7 @@ def run_update_boundary_2():
 
     print ("$$$$$$$$$$$$",target_file_1)
     if skip_step and os.path.exists(target_file_1):
-        print ("Warning ############### >>>> ",target_file_1," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file_1," <<<< ############### exists, skip ...")
     else:
         cmd = python_path + ' ' + cur_dir+"/update_boundary_2.py" +  ' -i ' + output_dir+'/tmp/'+input_file + ' -o ' + output_dir
         #if is_rm_tmp == False:
@@ -805,7 +806,7 @@ def run_update_boundary_2():
 
         print ("$$$$$$$$$$$$",target_file_2)
     if skip_step and os.path.exists(target_file_2):
-        print ("Warning ############### >>>> ",target_file_2," <<<< ############### exsits, skip ...")
+        print ("Warning ############### >>>> ",target_file_2," <<<< ############### exists, skip ...")
     else:
         cmd = python_path + ' ' + cur_dir+"/update_boundary_2.py" +  ' -i ' + output_dir+'/tmp/'+input_file_2 + ' -o ' + output_dir
         #if is_rm_tmp == False:
@@ -826,7 +827,7 @@ def run_bed_to_graph():
     if silence == False:
         print ("########### in run_bed_to_graph ###############")
         print ("""
-        inputs order: XX.0.f.updagte.bed XX.1.f.updagte.bed list_of_gtf result.txt result.bed
+        inputs order: XX.0.f.update.bed XX.1.f.update.bed list_of_gtf result.txt result.bed
 
         """)
         print ("Other parameters:","IS FROM HERE")
@@ -842,7 +843,7 @@ def run_bed_to_graph():
     target_file_2 = output_dir+"/tmp/"+"result."+sample_name+".bed"
 
     if skip_step and os.path.exists(target_file_1) and os.path.exists(target_file_2):
-        print ("Warning ############### >>>> ",target_file_1,target_file_2," <<<< ############### exsit, skip ...")
+        print ("Warning ############### >>>> ",target_file_1,target_file_2," <<<< ############### exist, skip ...")
         return
 
     cmd = cur_dir+"/"+"bedToGraph "+input_file+" "+input_file_2+" "+list_of_gtf+" "+target_file_1+" "+target_file_2
@@ -1018,7 +1019,12 @@ def run_assign_best_annotation():
 #
 def remove_tmp():
     if is_rm_tmp:
-        cmd = 'rm -rf ' + output_dir +'/tmp'
+        if silence == False:
+            print('Removing temporary files')
+        try:
+            shutil.rmtree(output_dir+'/tmp')
+        except OSError as e:
+            print("Error: {} - {}".format(e.filename, e.strerror))
 
 def warnings_and_usage():
     if input_file == '':

@@ -77,7 +77,6 @@ $PATH_TO_DANSR/src/dansr.py -h
 ### Parameters
 #### Input files
 ```
--t/--type          (Required) "single" or "pair", depending on whether single or paired-end reads are provided
 -i/--input-file    (Required) A FASTQ file of single-end RNA-seq reads if type is "single", or the first of two paired-end FASTQs if type is "pair"
 -j/--input-file-2  (Required if pair) Second paired-end FASTQ file
 -s/--single-type   (Default: forward) Strandedness of single reads, either "forward", "reverse" or "both"

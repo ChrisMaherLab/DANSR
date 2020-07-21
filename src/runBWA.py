@@ -159,11 +159,11 @@ def run_bwa_sam_2():
     if sample_name =='':
        cmd = path_to_bwa+ ' sampe '+ bwa_options_sam +' -f ' + output_dir +'/alignment/'+getOutputName2(input_file,'sam') +' '
        cmd = cmd + reference +' '+ output_dir +'/alignment/'+getOutputName2(input_file,'sai') + ' '
-       cmd = cmd + output_dir +'/'+getOutputName2(input_file_2,'sai') + ' '
+       cmd = cmd + output_dir +'/alignment/'+getOutputName2(input_file_2,'sai') + ' '
     else:
        cmd = path_to_bwa+ ' sampe '+ bwa_options_sam +' -f ' + output_dir +'/alignment/'+sample_name+'.sam '
        cmd = cmd + reference +' '+ output_dir +'/alignment/'+sample_name+'.sai '
-       cmd = cmd + output_dir +'/'+sample_name+'.2.sai '
+       cmd = cmd + output_dir +'/alignment/'+sample_name+'.2.sai '
     cmd = cmd + input_file + ' ' + input_file_2
     print (cmd)
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
@@ -182,11 +182,9 @@ def run_samtools():
     output = p.stdout.read()
     print (output)
     if sample_name == '':
-        cmd = 'samtools sort '+output_dir+'/alignment/'+getOutputName2(input_file,'bam')+' '
-        cmd = cmd + output_dir +'/alignment/'+getFilename(input_file)+'.sort'
+        cmd = 'samtools sort -o '+output_dir +'/alignment/'+getFilename(input_file)+'.sort.bam '+output_dir+'/alignment/'+getOutputName2(input_file,'bam')+' '
     else:
-        cmd = 'samtools sort '+output_dir+'/alignment/'+sample_name+'.bam '
-        cmd = cmd + output_dir +'/alignment/'+sample_name+'.sort'
+        cmd = 'samtools sort -o 'output_dir +'/alignment/'+sample_name+'.sort.bam '+output_dir+'/alignment/'+sample_name+'.bam '
     print (cmd)
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
