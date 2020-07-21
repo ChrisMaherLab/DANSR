@@ -184,7 +184,7 @@ def run_samtools():
     if sample_name == '':
         cmd = 'samtools sort -o '+output_dir +'/alignment/'+getFilename(input_file)+'.sort.bam '+output_dir+'/alignment/'+getOutputName2(input_file,'bam')+' '
     else:
-        cmd = 'samtools sort -o 'output_dir +'/alignment/'+sample_name+'.sort.bam '+output_dir+'/alignment/'+sample_name+'.bam '
+        cmd = 'samtools sort -o '+output_dir +'/alignment/'+sample_name+'.sort.bam '+output_dir+'/alignment/'+sample_name+'.bam '
     print (cmd)
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
