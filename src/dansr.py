@@ -1062,8 +1062,8 @@ def warnings_and_usage():
 
 def main(argv):
     setDefault()
-    get_tool_path()
     getParameters(argv[1:])
+    get_tool_path()
     warnings_and_usage()
     use_real_path()
     make_dir(output_dir)
