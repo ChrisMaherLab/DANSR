@@ -177,7 +177,7 @@ docker run chrismaherlab/dansr dansr -h
 ### Example 
 To run DANSR using docker on the example data provided, use the following command:
 ```
-docker run -v $PATH_TO_REFERENCE:/dansr_ref -v $PATH_TO_OUTPUT/dansr_out chrismaherlab/dansr dansr.py \
+docker run -v $PATH_TO_REFERENCE:/dansr_ref -v $PATH_TO_OUTPUT:/dansr_out chrismaherlab/dansr dansr.py \
         -i /opt/DANSR/example/MRA2_miRNA.fastq \
         -o /dansr_out \
         -S example \
