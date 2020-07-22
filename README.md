@@ -155,6 +155,8 @@ src/dansr.py \
 ```
 The results of this execution can be compared with the results files in example/example_results.
 
+The raw reads in MRA2_miRNA.fastq are sourced from SRA run SRR6495997, a file of miRNA-seq reads of the MRA2 metastatic melanoma cell line.
+
 ## DANSR Docker Instructions
 To use DANSR, a docker image has been created and tested on Linux and Mac. To run DANSR, you need to have [Docker](https://docs.docker.com/) installed on your machine. 
 
