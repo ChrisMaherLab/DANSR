@@ -216,7 +216,12 @@ def print_records():
         print cmd
         p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
         output = p.stdout.read()
-        print output        
+        print output
+        p.communicate()
+        if p.returncode:
+            print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+            sys.exit(1)
+
 
 def intersect():
     cmd = 'bedtools intersect -a '+input_bed_file+' -b '+output_dir+'/tmp/'+getOutputName2(tmp_bed_annot_file,"sort.bed")
@@ -229,6 +234,11 @@ def intersect():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print output
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 cluster_to_bed_record = {}
 

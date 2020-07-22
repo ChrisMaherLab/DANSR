@@ -136,6 +136,11 @@ def run_bedtools():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
     #cmd = path_to_bedtools + " sort" + " -i "+ bedfile2 + " | " + path_to_bedtools + " merge -nms > " + bedoutfile2
     cmd = path_to_bedtools + " sort" + " -i "+ bedfile2 + " | " + path_to_bedtools + " merge -i - -c 4 -o collapse -delim \";\" > " + bedoutfile2   ### modified by Eteleeb
@@ -143,6 +148,11 @@ def run_bedtools():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 def main(argv):
     setDefault()

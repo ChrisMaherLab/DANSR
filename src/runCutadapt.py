@@ -124,7 +124,12 @@ def run_cutadapt_1():
     cmd = cmd + ' -m '+str(min_read_length)+' '+ input_file
     p = Popen(cmd, cwd=output_dir, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
-    print (output) 
+    print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 def run_cutadapt_2():
     cmd = path_to_cutadapt +' -a '+ adapter +' -A '+adapter2+' -o '+ output_dir +'/tmp/'+getOutputName(input_file,'trim')
@@ -135,6 +140,11 @@ def run_cutadapt_2():
     p = Popen(cmd, cwd=output_dir, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 #def remove_tmp():
 #    if is_rm_tmp:

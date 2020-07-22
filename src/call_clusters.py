@@ -107,12 +107,22 @@ def merge_sort_all():
             print cmd
             p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
             output = p.stdout.read()
-            print output  
+            print output
+            p.communicate()
+            if p.returncode:
+                print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+                sys.exit(1)
+
     cmd = path_to_bedtools + ' sort -i '+output_dir+'/'+merge_name+'.bed > '+output_dir+'/'+merge_name+'.sort.bed'
     print cmd
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print output
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 def get_strand_from_bed(s):
     ss=(s.split("\t")[3]).split(",")[3][0]
@@ -167,6 +177,11 @@ def run_call_cluster(file_name):
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print output
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 def call():
     run_call_cluster(merge_name+'.sort.0.bed')

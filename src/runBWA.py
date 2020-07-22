@@ -128,6 +128,12 @@ def run_bwa_aln():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    p.communicate()
+    #print('bwa aln code: {}'.format(p.returncode), file=sys.stderr)
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+        
 
 def run_bwa_aln_2():
     run_bwa_aln()
@@ -142,6 +148,11 @@ def run_bwa_aln_2():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 def run_bwa_sam():
     if sample_name =='':
@@ -154,6 +165,11 @@ def run_bwa_sam():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 def run_bwa_sam_2():
     if sample_name =='':
@@ -169,6 +185,11 @@ def run_bwa_sam_2():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 def run_samtools():
     if sample_name == '':
@@ -181,6 +202,11 @@ def run_samtools():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
     if sample_name == '':
         cmd = 'samtools sort -o '+output_dir +'/alignment/'+getFilename(input_file)+'.sort.bam '+output_dir+'/alignment/'+getOutputName2(input_file,'bam')+' '
     else:
@@ -189,6 +215,12 @@ def run_samtools():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    #print('TEST',file=sys.stderr)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
     if sample_name == '':
         cmd = 'samtools index '+output_dir+'/alignment/'+getFilename(input_file)+'.sort.bam'
     else:
@@ -197,6 +229,11 @@ def run_samtools():
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     output = p.stdout.read()
     print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 #def remove_tmp():
 #    if is_rm_tmp:

@@ -396,7 +396,12 @@ runCutadapt.py parameters:
     output = p.stdout.read()
     if silence == False:
         print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
 
+    
 def run_bwa():
     global input_file
     global input_file_2
@@ -418,8 +423,8 @@ runBWA.py parameters:
 
         """)
         print ("Set as the following:")
-        print ("input-file:", "IS FROM HERE", input_file)
-        print ("input-file-2:", "IS FROM HERE", input_file_2)
+        print ("input-file:", input_file)
+        print ("input-file-2:", input_file_2)
         print ("output-dir:", output_dir)
         print ("sample-name:", sample_name)
         print ("reference:", reference)
@@ -465,7 +470,12 @@ runBWA.py parameters:
     output = p.stdout.read()
     if silence == False:
         print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
 
+        
 def run_filter_sam_by_sigar():
     global input_file
     if silence == False:
@@ -513,6 +523,11 @@ run_filter_sam_by_sigar parameters:
     output = p.stdout.read()
     if silence == False:
         print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
 
 def run_sam_split():
     global input_file
@@ -566,6 +581,10 @@ run_sam_split parameters:
     output = p.stdout.read()
     if silence == False:
         print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
 
 
 def run_sam_to_bed():
@@ -622,6 +641,11 @@ run_sam_to_bed parameters:
         output = p.stdout.read()
         if silence == False:
             print (output)
+        p.communicate()
+        if p.returncode:
+            print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+            sys.exit(1)
+
 
     target_file_2 = output_dir+"/tmp/"+getOutputName2(input_file_2, "bed")
     print ("$$$$$$$$$$$$",target_file_2)
@@ -641,6 +665,10 @@ run_sam_to_bed parameters:
         output = p.stdout.read()
         if silence == False:
             print (output)
+        p.communicate()
+        if p.returncode:
+            print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+            sys.exit(1)
 
 
 def run_bed_split_and_merge():
@@ -692,6 +720,10 @@ run_sam_to_bed parameters:
     output = p.stdout.read()
     if silence == False:
         print (output)
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
 
 
 def run_filter_bed():
@@ -740,6 +772,11 @@ run_filter_bed parameters:
         output = p.stdout.read()
         if silence == False:
             print (output)
+        p.communicate()
+        if p.returncode:
+            print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+            sys.exit(1)
+
 
         print ("$$$$$$$$$$$$",target_file_2)
     if skip_step and os.path.exists(target_file_2):
@@ -753,6 +790,11 @@ run_filter_bed parameters:
         output = p.stdout.read()
         if silence == False:
             print (output)
+        p.communicate()
+        if p.returncode:
+            print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+            sys.exit(1)
+
 
 def run_update_boundary_2():
     global input_file
@@ -803,6 +845,11 @@ def run_update_boundary_2():
         output = p.stdout.read()
         if silence == False:
             print (output)
+        p.communicate()
+        if p.returncode:
+            print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+            sys.exit(1)
+
 
         print ("$$$$$$$$$$$$",target_file_2)
     if skip_step and os.path.exists(target_file_2):
@@ -820,6 +867,11 @@ def run_update_boundary_2():
         output = p.stdout.read()
         if silence == False:
             print (output)
+        p.communicate()
+        if p.returncode:
+            print(cmd+' returned with non-zero exit code, aborting.', file=sys.stderr)
+            sys.exit(1)
+
 
 def run_bed_to_graph():
     global input_file
@@ -852,6 +904,11 @@ def run_bed_to_graph():
     output = p.stdout.read()
     if silence == False:
         print (output)
+    p.communicate()
+    if p.returncode:
+        print(cmd+' returned with non-zero exit code, aborting.', file=sys.stderr)
+        sys.exit(1)
+
 
 def run_filter_result():
 
@@ -880,6 +937,11 @@ def run_filter_result():
     output = p.stdout.read()
     if silence == False:
         print (output)
+    p.communicate()
+    if p.returncode:
+        print(cmd+' returned with non-zero exit code, aborting.', file=sys.stderr)
+        sys.exit(1)
+
 
 def run_assign_best_annotation():
         
@@ -903,6 +965,11 @@ def run_assign_best_annotation():
     output = p.stdout.read()
     if silence == False:
         print (output)
+    p.communicate()
+    if p.returncode:
+        print(cmd+' returned with non-zero exit code, aborting.', file=sys.stderr)
+        sys.exit(1)
+
 
 #def run_filter_result_bed():
 #    global input_file
