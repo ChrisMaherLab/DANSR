@@ -12,6 +12,10 @@ def usage():
     print ("""
     dansr [OPTIONS] -i <reads.fastq> -r <human_ref.fa> -t <human_ref.gtf> -g <smRNA1.gtf,...>  
 
+    DANSR is a tool for the detection of annotated and novel small RNAs between 17-200nt from RNAseq data. It has the ability to efficiently process large quantities of sequenced reads of variable length to identify diverse small RNA species.
+
+    DANSR is developed at Christopher Maher Lab at Washington University in St. Louis.
+
     Parameters:
         
         -h/--help              [        :    Print help information                 Optional                                  ]
