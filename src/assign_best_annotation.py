@@ -19,7 +19,7 @@ def usage():
         -o/--output-dir        [string  :    path to output dir.    Default: ./                                           ]
         -g/--gtf               [string  :    path to gtf file of small RNA. (Or , seperated paths)                        ]
         -j/--j-score           [float   :    min Jaccard similarity. Default: 0.3                                         ]
-        -s/--small-types       [string  :    comma separated small RNA types                                               ]
+        -s/--small-types       [string  :    comma separated small RNA types                                              ]
         -m/--min-novo-reads    [int     :    minimum number of reads to call unannotated novel small RNA. Default: 5.     ]
         -u/--unstranded        [        :    no strand awareness. Default: stranded                                       ]
         -b/--bedtools          [string  :    path to bedtoos.       Default: bedtools                                     ]    
@@ -294,6 +294,8 @@ def print_results():
     # Append user-supplied biotypes, if available
     if small_types_str:
         small_types += small_types_str.strip().split(',')
+    #Convert all to upper case to avoid potential case-based mismatches
+    small_types = [s.upper() for s in small_types]
 
     outfile1 = "%s" % output_dir+'/results/'+getOutputName2(input_bed_file,"smallRNAs.tsv")
     outfile2 = "%s" % output_dir+'/results/'+getOutputName2(input_bed_file,"smallRNAs.close.proximity.tsv")    
@@ -344,7 +346,7 @@ def print_results():
                 best_feature = bestFeature[clusterID]
                 f_JC_score = float('%.2f' % float(JC_score[clusterID].rstrip("\n")))
                 
-                if clusterBioType in small_types and float(f_JC_score) >= j_score and is_small(tmp):
+                if clusterBioType.upper() in small_types and float(f_JC_score) >= j_score and is_small(tmp):
                     f1.write("\t".join(tmp)+"\t"+best_feature+"\t"+str(f_JC_score)+"\n")
                 elif tmp[8] == "SM-ONLY" and is_small(tmp):
                     #f2.write("\t".join(tmp[:-1])+"\n")

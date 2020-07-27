@@ -10,7 +10,7 @@ from difflib import get_close_matches
 
 def usage():
     print ("""
-    dansr -i <reads.fastq>
+    dansr [OPTIONS] -i <reads.fastq> -r <human_ref.fa> -t <human_ref.gtf> -g <smRNA1.gtf,...>  
 
     Parameters:
         
@@ -23,7 +23,7 @@ def usage():
         -w/--skip              [        :    Skip a step if target output exists    Optional        Default: Not skip         ] 
 
         -b/--begin-no-trimming [        :    Input already trimmed                  Optional        Default: Trim             ]
-        -a/--adapter           [string  :    Adapter sequence to cut                Required                                  ]
+        -a/--adapter           [string  :    Adapter sequence to cut                Required if -b not set                    ]
         -i/--input-file        [string  :    Path to single reads (FASTQ)           Required                                  ]
                                [             Or first reads in pair                                                           ]
         -j/--input-file-2      [string  :    Path to second reads in pair (FASTQ)   Optional                                  ]
@@ -40,19 +40,17 @@ def usage():
         -p/--pair-type         [string  :    "fr-unstranded"/"fr-firststranded"/"fr-secondstranded" Default: fr-unstranded    ]
         -s/--single-type       [string  :    "forward"/"reverse"/"both"                             Default: forward          ]
 
-        -N/--number-reads      [int     :    Min number of reads for a cluster                      Default: 2                ]    
+        -N/--number-reads      [int     :    Min number of reads for a cluster      Optional        Default: 2                ]    
 
-        -P/--percent-cur       [float   :    Max percentage of reads from precurser Optional        Default: 0.3              ]  
+        -P/--percent-cur       [float   :    Max percentage of reads from precurser Optional        Default: 0.3              ] 
         -f/--cutoff            [float   :    RPM increase cutoff for boudary update Optional        Default: 0.33             ] 
-
-        -l/--list-of-gtf       [string  :    Comma separated GTF files for all      Required                                  ]
-    
         -U/--percent-uniq      [float   :    Min percent uniq reads in a cluster    Optional        Default: 0.5              ] 
         -R/--uniq-reads        [int:    :    Min number of uniq reads in a cluster  Optional        Default: 2                ]  
         -V/--ov-with-largest   [float   :    Min % of overlap with largest cluster  Optional        Default 0.75              ]
 
+        -t/--ref-gtf           [string  :    Path human reference GTF annotation    Required                                  ]
         -g/--gtf-small         [string  :    Comma separated GTFs for small RNA     Required                                  ]
-        -e/--small-types       [string  :    Comma separated small RNA types        Required                                  ]
+        -e/--small-types       [string  :    Comma separated smRNA gene_biotypes    Optional        Default: ""               ]
         -u/--unstranded        [        :    No strand awareness                    Optional        Default: stranded         ]
         -J/--jaccard-index     [float   :    Min Jaccard similarity score.          Optional        Default: 0.3              ]
 
@@ -89,6 +87,7 @@ percent_uniq = ''
 uniq_reads = ''
 ov_with_largest = ''
 
+ref_gtf = ''
 gtf_small = ''
 #percent_over = ''
 small_types = ''
@@ -157,7 +156,7 @@ def use_real_path():
 
 def getParameters(argv):
     try:
-        opts, args = getopt.getopt(argv,"ho:vwkS:z:ba:i:j:x:A:r:X:Y:c:n:p:s:N:P:f:l:g:e:uR:U:V:J:",
+        opts, args = getopt.getopt(argv,"ho:vwkS:z:ba:i:j:x:A:r:X:Y:c:n:p:s:N:P:f:t:g:e:uR:U:V:J:",
        ["help",
         "output-dir=",
         "verbose",
@@ -181,7 +180,7 @@ def getParameters(argv):
         "number-reads=",
         "percent-cur=",
         "cutoff=",
-        "list-of-gtf=",
+        "ref-gtf=",
         "gtf-small=",
         "small-types=",
         "unstranded",
@@ -265,9 +264,9 @@ def getParameters(argv):
         elif opt in ("-f","--cutoff"):
             global cutoff
             cutoff = arg
-        elif opt in ("-l","--list-of-gtf"):
-            global list_of_gtf
-            list_of_gtf = arg
+        elif opt in ("-t","--ref-gtf"):
+            global ref_gtf
+            ref_gtf = arg
         elif opt in ("-g","--gtf-small"):
             global gtf_small
             gtf_small = arg
@@ -295,6 +294,7 @@ def getParameters(argv):
         elif opt in ("-J","--jaccard-index"):
             global jaccard_index
             jaccard_index = arg
+    global type_str
     if not input_file_2:
         type_str="single"
         if single_type != "forward":
@@ -303,6 +303,9 @@ def getParameters(argv):
     else:
         type_str="pair"
         print('Warning: paired end mode is still under beta development, take care to check results for accuracy.', file=sys.stderr)
+    #Make list of all GTF files:
+    global list_of_gtf
+    list_of_gtf = ','.join([gtf_small,ref_gtf])
 
 def make_dir(path):
     if not os.path.exists(path):
@@ -931,6 +934,8 @@ def run_filter_result():
         cmd = cmd + ' -c ' + number_reads
     if ov_with_largest!='':
         cmd = cmd + ' -v ' + ov_with_largest
+    if small_types:
+        cmd = cmd + ' -s ' + small_types
 
     print (cmd)
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
@@ -958,7 +963,7 @@ def run_assign_best_annotation():
     if no_strand:
         cmd = cmd + ' -u '
     if small_types:
-        cmd += '-s '+ small_types
+        cmd += ' -s '+ small_types
         
     print (cmd)
     p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
@@ -1120,7 +1125,10 @@ def warnings_and_usage():
         print ("-t/--type is required")
         exit(1)
     if list_of_gtf == '':
-        print ("-l/--list-of-gtf is required")
+        print ("list-of-gtf is required")
+        exit(1)
+    if ref_gtf == '':
+        print ("-t/--ref-gtf is required")
         exit(1)
     if gtf_small == '':
         print ("-g/--gtf-small is required")

@@ -72,7 +72,7 @@ bwa index Homo_sapiens.GRCh37.75.dna.primary_assembly.fa
 ### Test installation
 To test the installation, please type in your terminal the following command which shows the usage page of DANSR. 
 ```
-$PATH_TO_DANSR/src/dansr.py -h
+$PATH_TO_DANSR/src/dansr -h
 ```
 
 ### Parameters
@@ -84,10 +84,9 @@ $PATH_TO_DANSR/src/dansr.py -h
 -p/--pair-type     (Default: fr-unstranded) Strandedness of paired-end reads, either "fr-unstranded", "fr-firststranded" or "fr-secondstranded"
 -r/--reference     (Required) Path to human reference genome in FASTA format
 -c/--chromosomes   (Default: chr1-22,X) Comma separated list of chromosome names from reference to which reads will be aligned
+-t/--ref-gtf       (Required) Path to human reference annotation in GTF format
 -g/--gtf-small     (Required) A comma-separated list of paths to small RNA GTF files
--e/--small-types   (Optional) Comma separated list of additional gene_biotype entries from the small RNA GTF with which to annotate read clusters;
-                    these types will be used in addition to the default biotypes: misc, piRNA, miRNA, rRNA, snRNA, snoRNA, tRNAs, Mt_rRNA, Mt_tRNA, misc_RNA, snRNA, siRNA, vaultRNA, hg19_F_misc, hg19_F_piRNA, hg19_miRNA, hg19_rRna, hg19_snRna, hg19_snoRna, hg19_tRNAs
--l/--list-of-gtf   (Required) A comma-separated list of paths to small RNA GTF files and the human reference GTF
+-e/--small-types   (Optional) Comma separated list of gene_biotype entries from the small RNA GTF with which to annotate read clusters in addition to the default types
 -z/--setup-file    (Default: setup.small.ini) Path to the DANSR setup file if it has been moved from the default location
 ```
 #### General options
@@ -143,14 +142,14 @@ An example small RNA GTF and single read FASTQ file are included with DANSR to d
 ```
 cd $PATH_TO_DANSR
 gunzip example/*.gz
-src/dansr.py \
+src/dansr \
         --input-file=example/MRA2_miRNA.fastq \
         --output-dir=example \
 	--sample-name=example \
 	--begin-no-trimming \
 	--number-reads=10 \
         --reference=$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-        --list-of-gtf=example/smallRNA_library.gtf,$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.gtf \
+	--ref-gtf=$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.gtf \
         --gtf-small=example/smallRNA_library.gtf
 ```
 The results of this execution can be compared with the results files in example/example_results.
@@ -179,14 +178,14 @@ docker run chrismaherlab/dansr dansr -h
 ### Example 
 To run DANSR using docker on the example data provided, use the following command:
 ```
-docker run -v $PATH_TO_REFERENCE:/dansr_ref -v $PATH_TO_OUTPUT:/dansr_out chrismaherlab/dansr dansr.py \
+docker run -v $PATH_TO_REFERENCE:/dansr_ref -v $PATH_TO_OUTPUT:/dansr_out chrismaherlab/dansr dansr \
         -i /opt/DANSR/example/MRA2_miRNA.fastq \
         -o /dansr_out \
         -S example \
         --begin-no-trimming \
         -N 10 \
         -r /dansr_ref/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-        -l /opt/DANSR/example/smallRNA_library.gtf,/dansr_ref/Homo_sapiens.GRCh37.75.gtf \
+	-t /dansr_ref/Homo_sapiens.GRCh37.75.gtf \
         -g /opt/DANSR/example/smallRNA_library.gtf
 ```
 where `PATH_TO_REFERENCE` is the local directory containing the human genome reference files and `PATH_TO_OUTPUT` is the desired local output directory.

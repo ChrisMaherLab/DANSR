@@ -23,6 +23,7 @@ def usage():
         -p/--uniq-percent      [float   :  min percentage of unique reads for good-quality clusters. Default 50%             ]
         -u/--min-unique        [int:    :  min number of unique reads for good-quality clusters. Default: 2                  ]
         -v/--ov-with-largest   [float   :  min percentage of overlap with largest node for low-quality clusters. Default 75% ]
+        -s/--small-types       [string  :  comma separated small RNA types                                                   ]
     Version:                    1.0.0
           """)
 
@@ -34,6 +35,7 @@ cutoff = 2
 uniq_perc = 0.50
 min_uniq = 2
 ov_with_largest = 0.75
+small_types_str = ''
 
 def setDefault():
     global output_dir
@@ -57,13 +59,14 @@ def use_real_path():
 
 def getParameters(argv):
     try:
-        opts, args = getopt.getopt(argv, "hi:o:c:p:u:v:", ["help",
-                                                           "input-bed-file=",
-                                                           "output-dir=",
-                                                           "cutoff=",
-                                                           "uniq-percent=",
-                                                           "min-unique="
-                                                           "ov-with-largest="])
+        opts, args = getopt.getopt(argv, "hi:o:c:p:u:v:s:", ["help",
+                                                             "input-bed-file=",
+                                                             "output-dir=",
+                                                             "cutoff=",
+                                                             "uniq-percent=",
+                                                             "min-unique=",
+                                                             "ov-with-largest=",
+                                                             "small-types="])
     except getopt.GetoptError:
         usage()
         sys.exit(1)
@@ -92,6 +95,10 @@ def getParameters(argv):
         elif opt in ("-v", "--ov-with-largest"):
             global ov_with_largest
             ov_with_largest = float(arg)
+        elif opt in ("-s", "--small-types"):
+            global small_types_str
+            small_types_str=arg
+
 
 
 def make_dir(path):
@@ -126,17 +133,24 @@ def determine_feature_class(f):
    
     smallRNA = ['misc', 'piRNA', 'miRNA', 'rRNA', 'snRNA', 'snoRNA', 'tRNAs', 'Mt_rRNA', 'Mt_tRNA', 'misc_RNA', 'snRNA',
                 'siRNA', 'vaultRNA','hg19_F_misc','hg19_F_piRNA','hg19_miRNA','hg19_rRna','hg19_snRna','hg19_snoRna','hg19_tRNAs']
+    if small_types_str:
+        smallRNA += small_types_str.strip().split(',')
+    #Convert all to upper case to avoid potential case-based mismatches
+    smallRNA = [s.upper() for s in smallRNA]
 
     protein_coding = ["protein_coding", "polymorphic_pseudogene", "TR_V_gene", "IG_V_gene", "IG_C_gene", "IG_J_gene", "TR_J_gene",
                       "TR_C_gene", "IG_D_gene", "TR_D_gene", "IG_LV_gene", "IG_M_gene", "IG_Z_gene", "nonsense_mediated_decay",
                       "non_stop_decay", "nontranslating_CDS", "TR_gene"]
+    protein_coding = [s.upper() for s in protein_coding]
 
     pseudogene = ["IG_C_pseudogene", "IG_J_pseudogene", "IG_V_pseudogene", "TR_J_pseudogene", "TR_V_pseudogene", "polymorphic_pseudogene", "processed_pseudogene",
                   "pseudogene", "disrupted_domain", "IG_pseudogene", "transcribed_processed_pseudogene", "transcribed_unprocessed_pseudogene", "unitary_pseudogene",
                   "translated_processed_pseudogene", "translated_unprocessed_pseudogene", "unprocessed_pseudogene", "transcribed_unitary_pseudogene"]
+    pseudogene = [s.upper() for s in pseudogene]
 
     lncrna = ["3prime_overlapping_ncrna", "antisense", "lincRNA", "processed_transcript","sense_intronic", "sense_overlapping", "non_coding", "retained_intron", 
               "hg19_lincRNAsTranscripts"]
+    lncrna = [s.upper() for s in lncrna]
 
     sm_ctr = pc_ctr = ps_ctr = ln_ctr = all_ctr = 0
 
@@ -144,6 +158,7 @@ def determine_feature_class(f):
         #feature = f[x].replace("hg19_F_", "")
         #feature = feature.replace("hg19_", "")
         feature = f[x].split("(")[-1].replace(")", "")
+        feature = feature.upper()
 
         sm = feature in smallRNA
         pc = feature in protein_coding
