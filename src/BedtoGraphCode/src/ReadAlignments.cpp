@@ -1,0 +1,47 @@
+#include "ReadAlignments.h"
+
+void ReadAlignments::getAlignmentKeys(string readName, vector<string> & keys)
+{
+    auto range = readAlignments.equal_range(readName);
+    unordered_multimap<string,string>::iterator it;
+    for(it=range.first;it!=range.second;it++)
+    {
+        keys.push_back(it->second);
+    }    
+}
+
+void ReadAlignments::insert(string readName, string alignmentKey)
+{
+    vector<string> akeys;
+    getAlignmentKeys(readName,akeys);
+    bool exist=false;
+    for(uint i=0;i<akeys.size();i++)
+    {
+        if(akeys[i].compare(alignmentKey)==0)
+            exist=true;
+    }
+    if(exist==false)
+    {
+        readAlignments.insert(make_pair(readName,alignmentKey));
+        readNames.insert(readName);
+    }
+}
+ 
+bool ReadAlignments::getNextName(string & readName)
+{
+//cout<<"ReadAlignments::getNextName"<<endl;
+//cout<<"readNames.size()="<<readNames.size()<<endl;
+    if(rit!=readNames.end())
+    {
+//cout<<"in if"<<endl;
+        readName=*rit;
+        rit++;
+        return true;
+    }
+    else
+    {
+//cout<<"in else"<<endl;
+        readName="";
+        return false;
+    }
+}

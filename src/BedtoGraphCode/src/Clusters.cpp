@@ -1,0 +1,121 @@
+#include "Clusters.h"
+
+//Cluster
+
+void Cluster::addAlignmentKey(string key)
+{
+    this->alignment_keys.insert(key);
+}
+
+bool Cluster::isAlignmentIn(string key)
+{
+    unordered_set<string>::iterator it=this->alignment_keys.find(key);
+    if(it!=alignment_keys.end())
+        return true;
+    else
+       return false;
+}
+
+void Cluster::removeAlignmentKey(string key)
+{
+    if(isAlignmentIn(key))
+        this->alignment_keys.erase(key);
+}
+
+string Cluster::getKey()
+{
+    string key="";
+    key=chr+"_"+std::to_string((long long int)start)+"_"+std::to_string((long long int)length)+"_";
+    key=key+std::to_string((long long int)strand);
+    return key;
+}
+
+bool Cluster::changeFromLine(string line, int bedFlag)
+{
+    if(line[0]=='#')
+        return false;
+    vector<string> tmp = my_split(line, '\t');
+    if(tmp.size()!=4)
+        return false;
+    setChr(tmp[0]);
+    uint32_t ss=atol((tmp[1]).c_str())+1;
+    int ll=atol((tmp[2]).c_str())-ss+1;
+    setStart(ss);
+    setLength(ll);
+    setStrand(bedFlag);
+    return true;
+}
+
+int Cluster::numUniq(Alignments & as, ReadAlignments & ra)
+{
+    int num=0;
+    unordered_set<string>::iterator it;
+    for(it=alignment_keys.begin(); it!=alignment_keys.end(); it++)
+    {
+        string ak=*it;
+        string readname=as.getAlignment(ak).getReadName();
+        vector<string> val;
+        ra.getAlignmentKeys(readname,val); 
+        if(val.size()==1)
+            num=num+1;
+    }
+    return num;
+}
+
+//Clusters
+
+Cluster Clusters::getCluster(string key)
+{
+    unordered_map<string,Cluster>::iterator it=clusters.find(key);
+    return it->second;
+}
+    
+void Clusters::insertCluster(string key, Cluster c)
+{
+    clusters.insert(make_pair(key,c));
+}
+    
+bool Clusters::isClusterIn(string key)
+{
+    unordered_map<string,Cluster>::iterator it=clusters.find(key);
+    if(it!=clusters.end())
+        return true;
+    else
+        return false;
+}
+
+bool Clusters::getNextKey(string & ckey)
+{
+    if(cit!=clusters.end())
+    {
+        ckey=cit->second.getKey();
+        cit++;
+        return true;
+    }
+    else
+    {
+        ckey="";
+        return false;
+    }
+}
+
+
+int Clusters::numAlignments(string ckey)
+{
+//cout<<"ckey="<<ckey<<endl;
+    unordered_map<string,Cluster>::iterator it=clusters.find(ckey);
+    if(it!=clusters.end())
+        return it->second.numAlign();
+    return 0;
+}
+
+int Clusters::numUniqAlignments(string ckey, Alignments & al, ReadAlignments & ra)
+{
+    unordered_map<string,Cluster>::iterator it=clusters.find(ckey);
+    if(it!=clusters.end())
+        return it->second.numUniq(al,ra);
+    return 0;
+}
+
+
+

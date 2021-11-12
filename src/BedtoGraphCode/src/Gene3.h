@@ -1,0 +1,87 @@
+/*
+ *  Gene3.h
+ *
+ *  Created on: March 28, 2017
+ *      Author: jinzhang
+ *
+ */
+
+#ifndef GENE3_H_
+#define GENE3_H_
+
+#include <iostream>
+#include <unordered_set>
+#include <unordered_map>
+#include <vector>
+#include <iterator>
+#include <cstdlib>
+#include <cstdint>
+#include <string>
+#include <algorithm>
+#include <cstring>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fstream>
+#include <cmath>
+
+using namespace std;
+
+#include "Utils.h"
+
+class Exon
+{
+private:
+    string chr;
+    uint32_t start;
+    uint32_t end;
+    int strand; // 0 1 2 for f r and unknown
+    string tId;
+    string gId;
+    string gName;
+    string gBioType;
+    string source;
+public:
+    Exon(){}
+    string getChr(){return chr;}
+    void setChr(string chr) {this->chr=chr;}
+    uint32_t getStart() const {return start;}
+    void setStart(uint32_t start) {this->start=start;}
+    uint32_t getEnd() const {return end;}
+    void setEnd(uint32_t end) {this->end=end;}
+    int getStrand() const {return strand;}
+    void setStrand(uint32_t strand) {this->strand=strand;}    
+    string getGBioType() const {return gBioType;}
+    void setGBioType(string gBioType) {this->gBioType=gBioType;}
+    string getSource() const {return source;}
+    void setSource(string source) {this->source=source;}
+    string getTId() const {return tId;}
+    void setTId(string tId) {this->tId=tId;}
+    string getGId() const {return gId;}
+    void setGId(string gId) {this->gId=gId;}
+    string getGName() const {return gName;}
+    void setGName(string gName) {this->gName=gName;}
+  void printExon() {cout << this->chr <<" "<< this->start <<" "<< this->end <<" "<< this->strand <<" "<< this->tId <<" "<< this->gId <<" "<< this->gName <<" "<< this->gBioType <<" "<< this->source <<endl;}
+};
+
+class Exons
+{
+private:
+    vector<Exon> exons;
+  //unordered_multimap<string,string> geneToTrans;
+    unordered_multimap<string,uint> transToExon;
+public:
+    Exons(){}
+    Exon getExon(uint eId){return exons[eId];}
+    void loadFromGTF(char * filename);
+    void loadGTFList(char * filenames);
+    void sortByCoodinate();
+    void setMaps();
+    void coordinateToExons(string chr, uint32_t start, uint32_t end, int strand, vector<uint> & ekeys);
+  //void geneToTranscripts(string gkey, vector<string> & tkeys);
+    void transcriptToExons(string tkey, vector<uint> & ekeys);
+};
+
+
+#endif
+
+

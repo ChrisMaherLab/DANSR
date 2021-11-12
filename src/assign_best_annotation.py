@@ -129,6 +129,7 @@ def get_all_small_RNA():
     all_annot_segs=[]
     gtfs=gtf_file.split(",")
     for x in range(len(gtfs)):
+        print("Processing GTF: "+gtfs[x])
         f=open(gtfs[x],"r")
         while True:
             line=f.readline()
@@ -137,37 +138,39 @@ def get_all_small_RNA():
             if line=="":
                 break
             else:
-                tmp=line.split("\t")
+                tmp=line.strip().split("\t")
                 if tmp[2]!="exon":
                     continue      
                 tmp2=tmp[8].split(" ")
+
                 isGeneType=False
                 isGeneName=False
                 tt=''
                 nn=''
-                for x in range(len(tmp2)):
-                    if tmp2[x]=='gene_name':
+                for i in range(len(tmp2)):
+                    if tmp2[i] in ['gene_name','Name']:
                         isGeneName=True
                         continue
-                    if tmp2[x]=='gene_biotype':
+                    if tmp2[i] in ['gene_biotype','type']: #updated 04/16
                         isGeneType=True
                         continue
                     if isGeneName:
-                        nn=rm_quoat(tmp2[x])
+                        nn=rm_quoat(tmp2[i])
                         isGeneName=False
                     if isGeneType:
-                        tt=rm_quoat(tmp2[x])
+                        tt=rm_quoat(tmp2[i])
                         isGeneType=False
                 if tt!='' and nn!='':
                     record=[]
-                    record.append(tmp[0])
-                    record.append(tmp[3])
-                    record.append(tmp[4])
-                    record.append(nn)
-                    record.append("0")
-                    record.append(tmp[6])
-                    record.append(tt)
-                    all_annot_segs.append(record)
+                    record.append(tmp[0]) #chrom
+                    record.append(tmp[3]) #start
+                    record.append(tmp[4]) #end
+                    record.append(nn) #gene_name
+                    record.append("0") #count
+                    record.append(tmp[6]) #strand
+                    record.append(tt) #gene_biotype
+                    if True: #nn != 'Y_RNA': #MJI
+                        all_annot_segs.append(record)
         #print ("Here the size of all_annot_segs is",len(all_annot_segs))
         f.close()
 
@@ -187,19 +190,19 @@ def print_records():
     global tmp_bed_annot_file
     tmp_bed_annot_file=output_dir +'/tmp/'+name+'.bed'
 
-    #print ("Name of the bed from gtf: ",tmp_bed_annot_file)
+    print ("Name of the bed from gtf: ",tmp_bed_annot_file)
 
     if os.path.exists(tmp_bed_annot_file)==False:
         get_all_small_RNA()
         f=open(tmp_bed_annot_file,"w")
 
-        #print ("Writing the bed file",tmp_bed_annot_file,"with",str(len(all_annot_segs)),"records")
+        print ("Writing the bed file",tmp_bed_annot_file,"with",str(len(all_annot_segs)),"records")
         for x in range(len(all_annot_segs)):
             tmp=all_annot_segs[x]
             f.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % ('chr'+tmp[0],tmp[1],tmp[2],tmp[3],tmp[4],tmp[5],tmp[6]))
         f.close()
         cmd = 'bedtools sort -i '+tmp_bed_annot_file+' > '+ output_dir+'/tmp/'+getOutputName2(tmp_bed_annot_file,"sort.bed")
-        #print cmd
+        print(cmd)
         p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
         output = p.stdout.read()
         p.communicate()
@@ -329,7 +332,7 @@ def print_results():
             JC_score[tmp[3]] = tmp[13]
             
     f.close()
-
+    print('opening '+input_bed_file)
     ff=open(input_bed_file,"r")
     while True:
         line = ff.readline()
@@ -355,6 +358,8 @@ def print_results():
                     f3.write("\t".join(tmp)+"\t"+best_feature+"\t"+str(f_JC_score)+"\n")
                     #f3.write("\t".join(tmp)+"\n")
             else:
+                best_feature = 'NA' #updated MJI
+                f_JC_score = 0
                 if tmp[8] == "SM-ONLY" and is_small(tmp):
                     #f2.write("\t".join(tmp[:-1])+"\n")
                     f2.write("\t".join(tmp[:-1])+"\t"+best_feature+"\t"+str(f_JC_score)+"\n") 

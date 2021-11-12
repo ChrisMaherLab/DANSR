@@ -1,0 +1,4 @@
+/gscmnt/gc5111/research/m.inkman/data/smRNA/maher_smRNAseq/dansr_code/BedToGraph/build/CMakeFiles/rebuild_cache.dir
+/gscmnt/gc5111/research/m.inkman/data/smRNA/maher_smRNAseq/dansr_code/BedToGraph/build/CMakeFiles/edit_cache.dir
+/gscmnt/gc5111/research/m.inkman/data/smRNA/maher_smRNAseq/dansr_code/BedToGraph/build/CMakeFiles/bedtograph-bin.dir
+/gscmnt/gc5111/research/m.inkman/data/smRNA/maher_smRNAseq/dansr_code/BedToGraph/build/CMakeFiles/bedtograph.dir

@@ -118,7 +118,7 @@ def sort_reads(reads):
         tmp=reads[x].split(",")
         start=tmp[3][1:]     ### read start
         cigar=tmp[4]         ### read length
-        one_long = []
+        one_long = [] #[0: full read string, 1: start position, 2: length of reference spanned by read, 3: count after cut, 4: keep this read? (0/1)]
         one_long.append(reads[x])
         one_long.append(int(start))
         one_long.append(getNextPosition(int(start),cigar)-int(start)+1)
@@ -132,6 +132,7 @@ def sort_reads(reads):
 
 counter = []
 
+#get array of per-base read depths for this cluster
 def count_reads(cs,ce):
     global counter
     counter = [0] * (ce-cs+1)
@@ -148,7 +149,8 @@ def count_reads(cs,ce):
         for y in range(en-be+1):
             #print "be-cs+y=",be-cs+y
             counter[be-cs+y]=counter[be-cs+y]+1
-      
+
+#Get average read depth across each read in cluster:
 def cal_density(cs,ce):
     for x in range(len(long_reads_sorted)):
         lr=long_reads_sorted[x]
@@ -166,8 +168,10 @@ def cut_long_reads(num_rm,cs,ce):
     global long_reads_sorted
     long_reads_sorted = sorted(long_reads_sorted, key = lambda x: (-x[3], x[1], x[2])) # sorted by weight + coord
     for x in range(num_rm):
-        long_reads_sorted[len(long_reads_sorted)-1-x][4]=0   ### asssign 0 to the low weight reads 
+        long_reads_sorted[len(long_reads_sorted)-1-x][4]=0   # asssign 0 to the low weight reads 
     long_reads_sorted = sorted(long_reads_sorted, key = lambda x: (x[1], x[2])) ### sort again by the coordinates n
+    #Remove cut reads (MJI 03/25):
+    long_reads_sorted = [r for r in long_reads_sorted if r[4]]
     #print "marked not included",num_rm 
 
 begins = []
@@ -263,6 +267,7 @@ def get_be_en_values():
                 break
     #print "be0,en0,be1,en1=",be0,en0,be1,en1 
 
+#Average coverage depth of subcluster
 def cal_bpl(ps,pe):#i in begins
     long_reads=long_reads_sorted[ps:pe+1]
     s=long_reads[0][1]
@@ -326,9 +331,9 @@ def get_update_line(line):
     if num_rm > 0 and num_reads-num_rm > 0:
         sort_reads(reads)
         cut_long_reads(num_rm,start0+1,end0)
-        get_sub_clusters(start0+1,end0)
-        get_begins_ends0()
-        get_be_en_values()
+        get_sub_clusters(start0+1,end0) #Find starts and ends of subclusters (begins[], ends[])
+        get_begins_ends0() #Set boundary b/w each subcluster to midpoint b/w end of one and start of next (begins0[],ends0[])
+        get_be_en_values() #Index of the first or last read that falls in each subcluster (be0, en0 -> begins0, ends0), (be1, en1 -> begins, ends)
         be,en,bep,enp=evaluate_sub_clusters()
         lines = ""
         for x in range(len(be)):
