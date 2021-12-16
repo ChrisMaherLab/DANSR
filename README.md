@@ -147,7 +147,6 @@ src/dansr \
         --output-dir=example \
 	--sample-name=example \
 	--begin-no-trimming \
-	--number-reads=10 \
         --reference=$PATH_TO_REFERENCE/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 	--ref-gtf=$PATH_TO_REFERENCE/Homo_sapiens.GRCh38.105.gtf \
         --gtf-small=reference/RNAcentral_library.hg38.gtf
@@ -183,7 +182,6 @@ docker run -v $PATH_TO_REFERENCE:/dansr_ref -v $PATH_TO_OUTPUT:/dansr_out chrism
         -o /dansr_out \
         -S example \
         --begin-no-trimming \
-        -N 10 \
 	-r /dansr_ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 	-t /dansr_ref/Homo_sapiens.GRCh38.105.gtf \
         -g /opt/DANSR/reference/RNAcentral_library.hg38.gtf
