@@ -66,7 +66,7 @@ cd $PATH_TO_REFERENCE
 wget ftp://ftp.ensembl.org/pub/release-105/gtf/homo_sapiens/Homo_sapiens.GRCh38.105.gtf.gz
 wget ftp://ftp.ensembl.org/pub/release-105/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
 gunzip *.gz
-bwa index Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+bwa index Homo_sapiens.GRCh38.dna.primary_assembly.fa
 ```
 
 ### Test installation
