@@ -141,7 +141,7 @@ An example small RNA GTF and single read FASTQ file are included with DANSR to d
 
 ```
 cd $PATH_TO_DANSR
-gunzip reference/*.gz
+gunzip reference/*.gz example/*.gz
 src/dansr \
         --input-file=example/MRA2_miRNA.fastq \
         --output-dir=example \
