@@ -1,1 +1,1 @@
-chrom	start	end	strand	total_mapped_reads	unique_mapped_reads	shared_reads
+chrom	start	end	strand	total_mapped_reads	unique_mapped_reads	shared_reads	closest_annot	closest_type

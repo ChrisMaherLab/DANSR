@@ -1,9 +1,3 @@
-chrom	start	end	strand	total_mapped_reads	unique_mapped_reads	shared_reads
-chr1	564951	565002	+	24	0	24
-chrX	55206613	55206664	-	19	6	13
-chr1	564881	564932	+	894	144	750
-chrMT	4331	4382	+	894	144	750
-chrGL000220.1	157319	157370	+	59	20	39
-chr2	25467965	25468016	-	536	536	0
-chr16	46920333	46920384	+	202	202	0
-chr17	33478224	33478275	-	143	121	22
+chrom	start	end	strand	total_mapped_reads	unique_mapped_reads	shared_reads	closest_annot	closest_type
+chr16	46886418	46886472	+	288	288	0	GPT2	protein_coding
+chr2	25245096	25245148	-	765	765	0	DNMT3A	protein_coding
