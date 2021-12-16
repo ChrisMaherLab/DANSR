@@ -60,13 +60,13 @@ Next, the file `DANSR/src/setup.small.ini` must be edited so that the second col
 
 As an optional step, you can add the absolute path to the "src" directory to your `PATH` variable.
  
-Finally, DANSR makes use of human reference GRCh37 v75 GTF and FASTA files, which can be downloaded from Ensembl:
+Finally, DANSR makes use of human reference GRCh38 GTF and FASTA files, which can be downloaded from Ensembl:
 ```
 cd $PATH_TO_REFERENCE
-wget ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
-wget ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-105/gtf/homo_sapiens/Homo_sapiens.GRCh38.105.gtf.gz
+wget ftp://ftp.ensembl.org/pub/release-105/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
 gunzip *.gz
-bwa index Homo_sapiens.GRCh37.75.dna.primary_assembly.fa
+bwa index Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
 ```
 
 ### Test installation
@@ -113,12 +113,12 @@ $PATH_TO_DANSR/src/dansr -h
 #### Alignment or filtering options
 ```
 -n/--number-hits      (Default: 5) Number of hits above which multi-mapped reads will be discarded
--N/--number-reads     (Default: 2) Minimum number of reads to form a cluster
--P/--percent-cur      (Default: 0.3) Max percentage of reads from precursor
+-N/--number-reads     (Default: 5) Minimum number of reads to form a cluster
+-P/--percent-cur      (Default: 0.3) Max percentage of reads to discard during cluster boundary optimization
 -f/--cutoff           (Default: 0.33) RPM increase above which a cluster boundary will be designated
 -U/--percent-uniq     (Default: 0.5) Minimum percentage of unique reads in a cluster
 -R/--uniq-reads       (Default: 2) Minimum number of unique reads in a cluster
--V/--ov-with-largest  (Default: 0.75) Minimum percentage of overlap with largest cluster
+-V/--ov-with-largest  (Default: 0.75) Maximum percentage of overlap allowed with largest cluster in graph
 -u/--unstranded       (Optional) Ignore strand when determining overlaps
 -J/--jaccard-index    (Default: 0.3) Minimum Jaccard similarity score for a cluster
 ```
@@ -148,9 +148,9 @@ src/dansr \
 	--sample-name=example \
 	--begin-no-trimming \
 	--number-reads=10 \
-        --reference=$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-	--ref-gtf=$PATH_TO_REFERENCE/Homo_sapiens.GRCh37.75.gtf \
-        --gtf-small=example/smallRNA_library.gtf
+        --reference=$PATH_TO_REFERENCE/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+	--ref-gtf=$PATH_TO_REFERENCE/Homo_sapiens.GRCh38.105.gtf \
+        --gtf-small=reference/RNAcentral_library.hg38.gtf
 ```
 The results of this execution can be compared with the results files in example/example_results.
 
@@ -184,8 +184,8 @@ docker run -v $PATH_TO_REFERENCE:/dansr_ref -v $PATH_TO_OUTPUT:/dansr_out chrism
         -S example \
         --begin-no-trimming \
         -N 10 \
-        -r /dansr_ref/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-	-t /dansr_ref/Homo_sapiens.GRCh37.75.gtf \
-        -g /opt/DANSR/example/smallRNA_library.gtf
+	-r /dansr_ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+	-t /dansr_ref/Homo_sapiens.GRCh38.105.gtf \
+        -g /opt/DANSR/reference/RNAcentral_library.hg38.gtf
 ```
 where `PATH_TO_REFERENCE` is the local directory containing the human genome reference files and `PATH_TO_OUTPUT` is the desired local output directory.

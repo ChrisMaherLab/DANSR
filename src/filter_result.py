@@ -202,15 +202,17 @@ def determine_feature_class(f):
 def decision_tree(num_nodes, cluster):
     
     nodes, t_reads, u_reads, ovl, ovany, has_annot = [], [], [], [], [], []
+    n_degree = []
     annot, cl_group = [], []
    
+    #Get ID of each cluster
     for x in range(len(cluster)):
         if x == 0:
             nodes.append(cluster[x].split(";")[0].split(":")[1])
         else:
             nodes.append(cluster[x].split(";")[0])
 
-        # n_degree.append(int(cluster[x].split(";")[1].replace('degree:','')))
+        n_degree.append(int(cluster[x].split(";")[1].replace('degree:','')))
         t_reads.append(int(cluster[x].split(";")[2].replace('alignments:', '')))
         u_reads.append(int(cluster[x].split(";")[3].replace('uniq:', '')))
         ovl.append(int(cluster[x].split(";")[4].replace('overlap:', '')))
@@ -222,11 +224,29 @@ def decision_tree(num_nodes, cluster):
         else:
             has_annot.append("N")
             annot.append("NA")
-            cl_group.append("Novel")
+            cl_group.append("Novel")   
 
     #determine largest node(s)
     maxValue = max(t_reads)
     idx = [i for i, j in enumerate(t_reads) if j == maxValue]
+    
+    #Set cliques to share candidate annotations among all members:
+    equalTotal = [r == t_reads[0] for r in t_reads]
+    equalDegree = [d == n_degree[0] for d in n_degree]
+    isClique = [equalTotal[i] and equalDegree[i] for i in range(len(equalTotal))]
+    cliqueAnnot = set()
+    for i in range(len(isClique)):
+        if isClique[i]:
+            for name in annot[i].split(','):
+                cliqueAnnot.add(name)
+    if len(cliqueAnnot) > 1 and 'NA' in cliqueAnnot:
+        cliqueAnnot.remove('NA')    
+    for i in range(len(isClique)):
+        if isClique[i]:
+            annot[i] = ','.join(sorted(cliqueAnnot))
+            if annot[i] != 'NA':
+                has_annot[i] = "Y"
+                cl_group[i] = determine_feature_class(sorted(cliqueAnnot))
       
     #define response variable
     resp = [0] * int(num_nodes)
@@ -246,15 +266,19 @@ def decision_tree(num_nodes, cluster):
         if i in idx:
             continue
 
-        if has_annot[i] == "Y":
-            resp[i] = "A"
-        else:
+#        if has_annot[i] == "Y":
+#            resp[i] = "A"
+#        else:
+        if True:
             if t_reads[i] <= cutoff:
                 resp[i] = "L"
             else:
                 if ovany[i] == 0:
                     if u_reads[i] > min_uniq:
-                        resp[i] = "U"
+                        if has_annot[i] == "Y":
+                            resp[i] = "A"
+                        else:
+                            resp[i] = "U"
                     else:
                         resp[i] = "L"
                 else:
@@ -262,15 +286,24 @@ def decision_tree(num_nodes, cluster):
                         resp[i] = "L"
                     else:
                         if u_reads[i]/t_reads[i] > uniq_perc:
-                            resp[i] = "U"
+                            if has_annot[i] == "Y":
+                                resp[i] = "A"
+                            else:
+                                resp[i] = "U"
                         else:
                             if ovany[i]/t_reads[i] > 0.50:
                                 if u_reads[i] > min_uniq:
-                                    resp[i] = "U"
+                                    if has_annot[i] == "Y":
+                                        resp[i] = "A"
+                                    else:
+                                        resp[i] = "U"
                                 else:
                                     resp[i] = "L"
                             else:
-                                resp[i] = "U"
+                                if has_annot[i] == "Y":
+                                    resp[i] = "A"
+                                else:
+                                    resp[i] = "U"
 
     # write results
     for z in range(len(nodes)):
@@ -293,7 +326,7 @@ def output_results(output_dir):
     if exists:
         cl_file = pd.read_csv(output_dir+'/results/'+getOutputName2(input_bed_file, 'all.clusters.tsv'), sep='\t')
         global annot_res, novel_res
-        annot_res= cl_file.loc[~cl_file['annotation_group'].isin(['NO-SM','Novel'])]
+        annot_res= cl_file.loc[(~cl_file['annotation_group'].isin(['NO-SM','Novel'])) & (cl_file['class']!='L')]
         #annot_res = annot_res.drop('class', axis=1)
         #annot_res = annot_res.drop('annotation_group', axis=1) 
         
@@ -308,8 +341,8 @@ def output_results(output_dir):
 
         annot_res.to_csv(output_dir+'/tmp/'+getOutputName2(input_bed_file, 'annotated.tsv'), sep='\t', index=False)
         #annot_ov_pc.to_csv(output_dir+'/'+getOutputName2(input_bed_file, 'smallRNAs.overlap.with.other.features.tsv'), sep='\t', index=False)
-        novel_other.to_csv(output_dir+'/results/'+getOutputName2(input_bed_file, 'unannotated.rejected.tsv'), sep='\t', index=False, na_rep="NA")
-        novel_small.to_csv(output_dir+'/results/'+getOutputName2(input_bed_file, 'unannotated.smallRNAs.tsv'), sep='\t', index=False, na_rep="NA")
+        novel_other.to_csv(output_dir+'/tmp/'+getOutputName2(input_bed_file, 'unannotated.rejected.tsv'), sep='\t', index=False, na_rep="NA")
+        novel_small.to_csv(output_dir+'/tmp/'+getOutputName2(input_bed_file, 'unannotated.smallRNAs.tsv'), sep='\t', index=False, na_rep="NA")
 
     else:
         sys.exit('File '+output_dir+'/'+getOutputName2(input_bed_file,'all.clusters.tsv')+' was not found!.')

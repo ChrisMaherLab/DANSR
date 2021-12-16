@@ -20,11 +20,12 @@ def usage():
         -g/--gtf               [string  :    path to gtf file of small RNA. (Or , seperated paths)                        ]
         -j/--j-score           [float   :    min Jaccard similarity. Default: 0.3                                         ]
         -s/--small-types       [string  :    comma separated small RNA types                                              ]
-        -m/--min-novo-reads    [int     :    minimum number of reads to call unannotated novel small RNA. Default: 5.     ]
         -u/--unstranded        [        :    no strand awareness. Default: stranded                                       ]
         -b/--bedtools          [string  :    path to bedtoos.       Default: bedtools                                     ]    
     Version:                    1.0.0
           """)
+    #        -m/--min-novo-reads    [int     :    minimum number of reads to call unannotated novel small RNA. Default: 5.     ]
+
 #parameters
 input_bed_file = ''
 output_dir = ''
@@ -232,6 +233,40 @@ def intersect():
 
     #print (output)
 
+
+def unannot_get_closest(unannotFileName):
+    outName = output_dir+"/results/"+basename(unannotFileName)
+    tmpName = output_dir+"/tmp/"+getOutputName2(input_bed_file,"append.bed")
+    cmd = 'tail -n+2 '+ unannotFileName +' | awk -v OFS="\t" \'{print $1,$2,$3,$1"_"$2"_"$3,0,$4}\' | sort -k1,1 -k2,2n | ' + path_to_bedtools + ' closest -t first -a - -b '+output_dir+'/tmp/'+getOutputName2(tmp_bed_annot_file,"sort.bed")
+
+    if unstranded == False:
+        cmd = cmd + " -s"
+
+    cmd = cmd + ' > ' + tmpName
+    
+    #print (cmd)
+    p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+    output = p.stdout.read()
+    p.communicate()
+    if p.returncode:
+        print('{} returned with exit code {}, aborting.'.format(cmd, p.returncode), file=sys.stderr)
+        sys.exit(1)
+
+    idToLineDict = {}
+    with open(unannotFileName,'r') as unFile:
+        header = unFile.readline()
+        for line in unFile:
+            line = line.strip()
+            lineId = '_'.join(line.split('\t')[:3])
+            idToLineDict[lineId] = line
+
+    with open(tmpName,'r') as tmpBed, open(outName, 'w') as outFile:
+        outFile.write(header.strip() + '\tclosest_annot\tclosest_type\n')
+        for line in tmpBed:
+            line = line.strip().split('\t')
+            outFile.write(idToLineDict[line[3]]+'\t'+line[-4]+'\t'+line[-1]+'\n')
+
+    
 cluster_to_bed_record = {}
 
 annotated_clusters = {}
@@ -486,6 +521,10 @@ def main(argv):
         intersect() 
         get_best_annot()
         print_results()
+        unannotSrna = input_bed_file.rsplit('.',2)[0]+'.unannotated.rejected.tsv'
+        unannotRej = input_bed_file.rsplit('.',2)[0]+'.unannotated.smallRNAs.tsv'
+        unannot_get_closest(unannotSrna)
+        unannot_get_closest(unannotRej)
         #plot_annot_length_dist(output_dir)
         #remove_tmp()
 

@@ -134,24 +134,24 @@ def sam_to_compact(s):
     chr1=tmp[2]
     strand=get_strand_from_flag(tmp[1])
     position=tmp[3]
-    sigar=tmp[5]
+    cigar=tmp[5]
     edit=tmp[12].split(":")[2]
-    return chr1+","+strand+position+","+sigar+","+edit
+    return chr1+","+strand+position+","+cigar+","+edit
 
-def getNextPosition(p,sigar):
-    if 'S' in sigar or 'H' in sigar: ##### not supporting clipped reads
+def getNextPosition(p,cigar):
+    if 'S' in cigar or 'H' in cigar: ##### not supporting clipped reads
         return -1
     else:
         s=''
         nums=[]
         num_str=''
-        for x in range(len(sigar)):
-            if sigar[x] in {'M','I','D','S','H'}:
-                s=s+sigar[x]
+        for x in range(len(cigar)):
+            if cigar[x] in {'M','I','D','S','H'}:
+                s=s+cigar[x]
                 nums.append(int(num_str))
                 num_str=''
             else:
-                num_str=num_str+sigar[x]
+                num_str=num_str+cigar[x]
         totalLen=0
         for x in range(len(s)):
             if s[x]=='M' or s[x]=='D':
@@ -187,8 +187,8 @@ def one_compact_to_bed(name,c,f):
     tmp=c.split(",")
     chr1=tmp[0]
     position=tmp[1][1:]
-    sigar=tmp[2]
-    nextPos=getNextPosition(int(position),sigar)
+    cigar=tmp[2]
+    nextPos=getNextPosition(int(position),cigar)
     if nextPos==-1:
         return ""
     else:

@@ -44,7 +44,7 @@ def usage():
         -p/--pair-type         [string  :    "fr-unstranded"/"fr-firststranded"/"fr-secondstranded" Default: fr-unstranded    ]
         -s/--single-type       [string  :    "forward"/"reverse"/"both"                             Default: forward          ]
 
-        -N/--number-reads      [int     :    Min number of reads for a cluster      Optional        Default: 2                ]    
+        -N/--number-reads      [int     :    Min number of reads for a cluster      Optional        Default: 5                ]    
 
         -P/--percent-cur       [float   :    Max percentage of reads from precurser Optional        Default: 0.3              ] 
         -f/--cutoff            [float   :    RPM increase cutoff for boudary update Optional        Default: 0.33             ] 
@@ -58,7 +58,7 @@ def usage():
         -u/--unstranded        [        :    No strand awareness                    Optional        Default: stranded         ]
         -J/--jaccard-index     [float   :    Min Jaccard similarity score.          Optional        Default: 0.3              ]
 
-    Version:                   1.0.1
+    Version:                   1.0.2
           """)
 
 #parameters
@@ -132,7 +132,7 @@ def setDefault():
     global type_str
     type_str = "single" # can update at run BWA
     global number_reads
-    number_reads = '2'
+    number_reads = '5'
 
 def get_tool_path():
     tmp_dict = {}
@@ -483,18 +483,18 @@ runBWA.py parameters:
         sys.exit(1)
 
         
-def run_filter_sam_by_sigar():
+def run_filter_sam_by_cigar():
     global input_file
     if silence == False:
         print
-        print ("########### in run_filter_sam_by_sigar ###############")
+        print ("########### in run_filter_sam_by_cigar ###############")
         print ("""
 
-run_filter_sam_by_sigar parameters:
+run_filter_sam_by_cigar parameters:
 
 -i/--input-sam-file    [string  :    path to SAM file from  BWA                       ]
 -o/--output-dir        [string  :    path to output dir.    Default: ./               ]
--s/--sigars-allow      [string  :    file of allowed sigars Default: sigars_allow.txt ]
+-s/--cigars-allow      [string  :    file of allowed cigars Default: cigars_allow.txt ]
 -k/--keep-tmp          [        :    keep the tmp folder.   Default: not keep
 
         """)
@@ -502,7 +502,7 @@ run_filter_sam_by_sigar parameters:
         print ("Set as the following:")
         print ("input-sam-file:", "IS FROM HERE")
         print ("output-dir:", output_dir)
-        print ("sigars-allow:", "Use sigars-allow.txt")
+        print ("cigars-allow:", "Use cigars-allow.txt")
         #ot="Yes"
         #if is_rm_tmp == True:
         #    ot="No"
@@ -515,14 +515,14 @@ run_filter_sam_by_sigar parameters:
 
     print ("+++++++++++++ updated input_file to, ",input_file)
 
-    #### refer to run filter_sam_by_sigar.py line 144
-    target_file = output_dir+"/tmp/"+getFilename(input_file)+".no.bad.sigar.sam"
+    #### refer to run filter_sam_by_cigar.py line 144
+    target_file = output_dir+"/tmp/"+getFilename(input_file)+".no.bad.cigar.sam"
     print ("$$$$$$$$$$$$",target_file)
     if skip_step and os.path.exists(target_file):
         print ("Warning ############### >>>> ",target_file," <<<< ############### exists, skip ...")
         return 
 
-    cmd = python_path + ' ' + cur_dir+"/filter_sam_by_sigar.py" +  ' -i ' + output_dir+'/alignment/'+input_file + ' -o ' + output_dir
+    cmd = python_path + ' ' + cur_dir+"/filter_sam_by_cigar.py" +  ' -i ' + output_dir+'/alignment/'+input_file + ' -o ' + output_dir
     #if is_rm_tmp == False:
     #    cmd = cmd + ' -k'
     print (cmd)
@@ -565,8 +565,8 @@ run_sam_split parameters:
 
         print ("Command:")
 
-    #### refer to run filter_sam_by_sigar.py line 144
-    input_file = getFilename(input_file)+".no.bad.sigar.sam"
+    #### refer to run filter_sam_by_cigar.py line 144
+    input_file = getFilename(input_file)+".no.bad.cigar.sam"
 
     #### refer to sam_split.py line 122
     target_file = output_dir+"/tmp/"+getFilename(input_file) + ".uniq.sam"
@@ -1157,7 +1157,7 @@ def main(argv):
     make_dir(output_dir+'/results')
     run_cutadapt()
     run_bwa()
-    run_filter_sam_by_sigar()
+    run_filter_sam_by_cigar()
     run_sam_split()
     run_sam_to_bed()
     run_bed_split_and_merge()

@@ -86,20 +86,20 @@ def getOutputName2(filename,append_format):
     fn=getFilename(filename)
     return fn+"."+append_format
 
-def getNextPosition(p,sigar):
-    if 'S' in sigar or 'H' in sigar: ##### not supporting clipped reads
+def getNextPosition(p,cigar):
+    if 'S' in cigar or 'H' in cigar: ##### not supporting clipped reads
         return -1
     else:
         s=''
         nums=[]
         num_str=''
-        for x in range(len(sigar)):
-            if sigar[x] in {'M','I','D','S','H'}:
-                s=s+sigar[x]
+        for x in range(len(cigar)):
+            if cigar[x] in {'M','I','D','S','H'}:
+                s=s+cigar[x]
                 nums.append(int(num_str))
                 num_str=''
             else:
-                num_str=num_str+sigar[x]
+                num_str=num_str+cigar[x]
         totalLen=0
         for x in range(len(s)):
             if s[x]=='M' or s[x]=='D':
@@ -171,7 +171,7 @@ def cut_long_reads(num_rm,cs,ce):
         long_reads_sorted[len(long_reads_sorted)-1-x][4]=0   # asssign 0 to the low weight reads 
     long_reads_sorted = sorted(long_reads_sorted, key = lambda x: (x[1], x[2])) ### sort again by the coordinates n
     #Remove cut reads (MJI 03/25):
-    long_reads_sorted = [r for r in long_reads_sorted if r[4]]
+    #long_reads_sorted = [r for r in long_reads_sorted if r[4]]
     #print "marked not included",num_rm 
 
 begins = []
