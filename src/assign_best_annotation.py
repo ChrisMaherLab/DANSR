@@ -327,7 +327,7 @@ def is_small(tmp):
 
 def print_results():
     #set_small_types()
-    small_types = ['misc', 'piRNA', 'miRNA', 'rRNA', 'snRNA', 'snoRNA', 'tRNAs', 'Mt_rRNA', 'Mt_tRNA', 'misc_RNA', 'snRNA',
+    small_types = ['misc', 'piRNA', 'miRNA', 'rRNA', 'snRNA', 'snoRNA', 'tRNAs', 'Mt_rRNA', 'Mt_tRNA', 'misc_RNA', 'snRNA', 'tRNA', 'ncRNA',
                    'siRNA', 'vaultRNA','hg19_F_misc','hg19_F_piRNA','hg19_miRNA','hg19_rRna','hg19_snRna','hg19_snoRna','hg19_tRNAs']
     # Append user-supplied biotypes, if available
     if small_types_str:
