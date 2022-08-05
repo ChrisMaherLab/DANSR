@@ -149,7 +149,7 @@ src/dansr \
 	--begin-no-trimming \
         --reference=$PATH_TO_REFERENCE/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 	--ref-gtf=$PATH_TO_REFERENCE/Homo_sapiens.GRCh38.105.gtf \
-        --gtf-small=reference/RNAcentral_library.hg38.gtf
+        --gtf-small=reference/homo_sapiens.GRCh38.RNAcentral.gtf
 ```
 The results of this execution can be compared with the results files in example/example_results.
 
@@ -184,6 +184,6 @@ docker run -v $PATH_TO_REFERENCE:/dansr_ref -v $PATH_TO_OUTPUT:/dansr_out chrism
         --begin-no-trimming \
 	-r /dansr_ref/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 	-t /dansr_ref/Homo_sapiens.GRCh38.105.gtf \
-        -g /opt/DANSR/reference/RNAcentral_library.hg38.gtf
+        -g /opt/DANSR/reference/homo_sapiens.GRCh38.RNAcentral.gtf
 ```
 where `PATH_TO_REFERENCE` is the local directory containing the human genome reference files and `PATH_TO_OUTPUT` is the desired local output directory.
